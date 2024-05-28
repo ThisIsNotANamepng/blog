@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Family Olympics Leaderboard</title>
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+<style>
+    .bronze {
+        transform: scale(0.75);
+    }
+
+    .bronze span {
+        background-color: #CD7F32;
+    }
+
+    .gold span {
+        background-color: #FFD700;
+    }
+
+    .silver {
+        transform: scale(0.75);
+    }
+
+    .silver span {
+        background-color: #C0C0C0;
+    }
+
+    caption {
+        color: #000000;
+        font-family: 'Lato', sans-serif;
+        font-size: 50px;
+    }
+
+    span {
+        border: 1px solid;
+        color: #000000;
+        font-family: 'Lato', sans-serif;
+        font-size: 25px;
+        padding: 12.5px;
+        position: relative;
+        top: -25px;
+    }
+
+    table {
+        border-collapse: collapse;
+        margin: auto;
+        text-align: center;
+    }
+
+    td {
+        padding-bottom: 50px;
+        padding-top: 50px;
+    }
+
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Default 3-column layout */
+        gap: 10px;
+    }
+
+    .grid-item {
+        text-align: center;
+        padding: 20px;
+        font-size: 20px;
+        color: white;
+    }
+
+    .item1 { /*background-color: #ff5733;*/ }
+    .item2 { /*background-color: #ffc300;*/ }
+    .item3 { /*background-color: #ff206e;*/ }
+    .item4 { /*background-color: #23aaff;*/ }
+    .item5 { background-color: #4caf50; }
+    .item6 { background-color: #9c27b0; }
+    .item7 { background-color: #3f51b5; }
+    .item8 { background-color: #ff9800; }
+    .item9 { background-color: #607d8b; }
+
+    @media only screen and (max-width: 768px) {
+        .grid-container {
+            grid-template-columns: 1fr; /* Switch to 1-column layout for narrow screens */
+        }
+    }
+
+    @media only screen and (min-width: 769px) and (max-width: 1024px) {
+        .grid-container {
+            grid-template-columns: repeat(2, 1fr); /* Switch to 2-column layout for medium screens */
+        }
+    }
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Data for the chart
+        var data = {
+            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+            datasets: [{
+                label: 'Value 1',
+                backgroundColor: '#FFD700',
+                borderWidth: 1,
+                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+            }, {
+                label: 'Value 2',
+                backgroundColor: '#C0C0C0',
+                borderWidth: 1,
+                data: [1, 5, 6, 2, 21, 16, 6, 23, 12, 4]
+            }, {
+                label: 'Value 3',
+                backgroundColor: '#CD7F32',
+                borderWidth: 1,
+                data: [17, 12, 4, 16, 7, 9, 0, 2, 13, 18]
+            }]
+        };
+    
+        // Configuration options
+        var options = {
+            indexAxis: 'x',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Earned Medals'
+                }
+            }
+        };
+    
+        // Get the canvas element
+        var ctx = document.getElementById('totalsBarChart').getContext('2d');
+    
+        // Create the chart
+        var totalsBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        // Data for the chart
+        var data = {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+            datasets: [{
+                label: 'My Dataset',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(153, 102, 255, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Configuration options
+        var options = {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Portion of Total Medals Earned'
+                }
+            }
+        };
+
+        // Get the canvas element
+        var ctx = document.getElementById('totalsPieChart').getContext('2d');
+
+        // Create the chart
+        var totalsPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Data for the chart
+        var data = {
+            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+            datasets: [{
+                label: 'Value 1',
+                backgroundColor: 'blue',
+                borderWidth: 1,
+                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+            }]
+        };
+    
+        // Configuration options
+        var options = {
+            indexAxis: 'x',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Earned Medals'
+                }
+            }
+        };
+    
+        // Get the canvas element
+        var ctx = document.getElementById('perAthleteBarChart').getContext('2d');
+    
+        // Create the chart
+        var perAthleteBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Data for the chart
+        var data = {
+            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+            datasets: [{
+                label: 'Value 1',
+                backgroundColor: 'red',
+                borderWidth: 1,
+                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+            }]
+        };
+    
+        // Configuration options
+        var options = {
+            indexAxis: 'x',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Earned Medals'
+                }
+            }
+        };
+    
+        // Get the canvas element
+        var ctx = document.getElementById('perPopulationBarChart').getContext('2d');
+    
+        // Create the chart
+        var perPopulationBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    });
+</script>
+
+
+<table>
+    <caption>Highest Fruit Score: <b>83</b></caption>
+    <tr>
+        <td class="silver"><img src="/static/face.jpg"><br/><span>675</span></td>
+        <td class="gold"><img src="/static/face.jpg"><br/><span>83</span></td>
+        <td class="bronze"><img src="/static/face.jpg"><br/><span>34</span></td>
+    </tr>
+</table>
+
+<div class="grid-container">
+    <div class="grid-item item1">
+        <canvas id="totalsBarChart" width="400" height="200"></canvas>
+    </div>
+    <div class="grid-item item2">
+        <canvas id="totalsPieChart" width="400" height="400"></canvas>
+    </div>
+    <div class="grid-item item3">
+        <canvas id="perAthleteBarChart" width="400" height="400"></canvas>
+    </div>
+    <div class="grid-item item4">
+        <canvas id="perPopulationBarChart" width="400" height="400"></canvas>
+    </div>
+    <div class="grid-item item5">5</div>
+    <div class="grid-item item6">6</div>
+    <div class="grid-item item7">7</div>
+    <div class="grid-item item8">8</div>
+    <div class="grid-item item9">9</div>
+</div>
+
+</body>
+</html> 
+
