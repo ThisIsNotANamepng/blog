@@ -1,9 +1,11 @@
 <html>
     <head>
         <title>Article name</title>
+        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+        <link rel="stylesheet" href="/static/style.css">
+    
     </head>
     <body>
-        Have article content here
-        {{ content }}
+        {{ content|safe }}
     </body>
 </html>

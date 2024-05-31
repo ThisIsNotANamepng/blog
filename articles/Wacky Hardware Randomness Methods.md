@@ -1,6 +1,4 @@
 Cybersecurity,Cryptography
 # Wacky Hardware Randomness Methods
 
-All about hpc
-
-2
+Cool neat little randomness methods

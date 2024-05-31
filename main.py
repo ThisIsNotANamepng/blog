@@ -18,19 +18,16 @@ def index():
         if filename.endswith('.md'):
             filepath = os.path.join('articles', filename)
             tagss.update(tags.parse_markdown_tags(filepath))
-    print((tagss))
 
     for filename in os.listdir('research'):
         if filename.endswith('.md'):
             filepath = os.path.join('articles', filename)
-            researchh.add(filename)
-    print((researchh))
+            researchh.add(filename[:-3])
 
     for filename in os.listdir('articles'):
         if filename.endswith('.md'):
             filepath = os.path.join('articles', filename)
-            articless.add(filename)
-    print(articless)
+            articless.add(filename[:-3])
 
 
     return render_template('index.html', tags=tagss, articles=articless, research=researchh)
@@ -38,6 +35,7 @@ def index():
 @app.route('/tag/<tag>')
 def tag(tag):
     articles = tags.get_articles_with_tag(tag)
+    print(len(articles))
     return render_template('tag.html', tag=tag, articles=articles)
 
 @app.route('/research')
@@ -46,18 +44,19 @@ def serve_research():
 
 @app.route('/articles/<article>')
 def serve_aricle_markdown(article):
-    print(article)
 
     if Path("articles/"+article+".md").exists() == False:
         return render_template('404.html')
 
-    with open("articles/"+article+'.md', 'r') as file:
-        content = file.read()
-        
+    with open("articles/"+article+".md", 'r') as file:
+        content = file.readlines()[1:]
+        content = ''.join(content)
+
     # Convert Markdown to HTML
     html = markdown.markdown(content)
 
     # Render the HTML with a template
+    #return md.convert(content)
     return render_template('article.html', content=html)
 
 
