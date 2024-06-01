@@ -42,6 +42,10 @@ def tag(tag):
 def serve_research():
     return render_template('research.html')
 
+@app.route('/boilerplate')
+def serve_boilerplate():
+    return render_template('boilerplates.html')
+
 @app.route('/articles/<article>')
 def serve_aricle_markdown(article):
 
