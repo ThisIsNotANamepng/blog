@@ -22,3 +22,4 @@ TODO:
     - Come up with a blog name
     - Pass article name to tab title
     - List articles by date posted
+    - Allow articles to not have tags and not have the first line of file appear in the tags section of /
