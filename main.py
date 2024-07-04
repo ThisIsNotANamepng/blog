@@ -35,7 +35,6 @@ def index():
 @app.route('/tag/<tag>')
 def tag(tag):
     articles = tags.get_articles_with_tag(tag)
-    print(len(articles))
     return render_template('tag.html', tag=tag, articles=articles)
 
 @app.route('/research')
@@ -66,7 +65,6 @@ def serve_aricle_markdown(article):
 
 @app.route('/research/<research>')
 def serve_specific_research(research):
-    print(research)
 
     if Path("research/"+research+".md").exists() == False:
         return render_template('404.html')

@@ -14,7 +14,7 @@ Article ideas
 - Data analytics of 2024 olympic medals earned, based off of stats gotten from family olympics
 
 
-Each article,md file has the tags on the first line, and the name of the file is the title of the article
+Each article.md file has the tags on the first line, and the name of the file is the title of the article
 
 
 TODO:
@@ -22,4 +22,5 @@ TODO:
     - Come up with a blog name
     - Pass article name to tab title
     - List articles by date posted
-    - Allow articles to not have tags and not have the first line of file appear in the tags section of /
+    - Allow articles to not have tags and not have the first line of file appear in the tags section of
+    - Add a linked table of contents to the boilerplates
