@@ -101,25 +101,27 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    
     document.addEventListener("DOMContentLoaded", function() {
         // Data for the chart
         var data = {
-            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+		labels: {{ countries|tojson }},
+		//labels: ["1", "2", "3", "4", "5"],
             datasets: [{
-                label: 'Value 1',
+                label: 'Gold Medals',
                 backgroundColor: '#FFD700',
                 borderWidth: 1,
-                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+		data: {{ gold_medals }}
             }, {
-                label: 'Value 2',
+                label: 'Silver Medals',
                 backgroundColor: '#C0C0C0',
                 borderWidth: 1,
-                data: [1, 5, 6, 2, 21, 16, 6, 23, 12, 4]
+		data: {{ silver_medals }}
             }, {
-                label: 'Value 3',
+                label: 'Bronze Medals',
                 backgroundColor: '#CD7F32',
                 borderWidth: 1,
-                data: [17, 12, 4, 16, 7, 9, 0, 2, 13, 18]
+		data: {{ bronze_medals }}
             }]
         };
     
@@ -152,10 +154,10 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Data for the chart
         var data = {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+		labels: {{ countries|tojson }},
             datasets: [{
-                label: 'My Dataset',
-                data: [12, 19, 3, 5, 2],
+                label: 'Medals Earned',
+		    data: {{ medals }},
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -202,12 +204,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Data for the chart
         var data = {
-            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+		labels: {{ countries|tojson }},
             datasets: [{
-                label: 'Value 1',
+                label: 'Medals Per Capita',
                 backgroundColor: 'blue',
                 borderWidth: 1,
-                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+		data: {{ medals_per_capita }}
             }]
         };
     
@@ -221,7 +223,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Earned Medals'
+                    text: 'Medals Per Capita'
                 }
             }
         };
@@ -240,12 +242,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Data for the chart
         var data = {
-            labels: ['Bar 1', 'Bar 2', 'Bar 3', 'Bar 4', 'Bar 5', 'Bar 6', 'Bar 7', 'Bar 8', 'Bar 9', 'Bar 10'],
+		labels: {{ countries|tojson }},
             datasets: [{
-                label: 'Value 1',
+                label: 'Medals Per Athletes',
                 backgroundColor: 'red',
                 borderWidth: 1,
-                data: [12, 19, 3, 5, 2, 1, 5, 7, 8, 4]
+		data: {{ medals_per_athlete }}
             }]
         };
     
@@ -259,7 +261,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Earned Medals'
+                    text: 'Medals Per Athletes'
                 }
             }
         };

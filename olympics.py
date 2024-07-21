@@ -7,6 +7,7 @@ def scrape_olympic_data():
 
     countries = ["Japan*", "United States", "Australia", "New Zealand", "Canada"]
     people = ["Jack", "Jonah", "Jennifer", "David", "Sean"]
+    populations = [123970000, 334934895, 30000000, 5300000, 41000000]
     gold_medals = []
     silver_medals = []
     bronze_medals = []
@@ -73,4 +74,24 @@ def load_lists_from_csv(filename):
         for row in reader:
             loaded_lists.append(row)
     return loaded_lists
+
+def convert_to_integers(str_list):
+    int_list = []
+    for s in str_list:
+        try:
+            num = int(s)
+            int_list.append(num)
+        except ValueError:
+            pass  # You can choose to skip or handle invalid entries here
+    return int_list
+
+def medals_per_capita(list1, list2):
+    # Check if the lists are of the same length
+    if len(list1) != len(list2):
+        raise ValueError("Lists must have the same length")
+
+    # Use list comprehension to create a new list of division results
+    result = [list1[i] / list2[i] for i in range(len(list1))]
+    
+    return result
 

@@ -22,9 +22,17 @@ Then came the surprisingly most difficult part, I wrote yet another python scrip
 
 # Results 
 
-The least random hash, with a `3.1111` shannon entropy, is `dbflje3q423wbnfjlwejf`, which is given by `password`.
+## Round 1
 
-The most random hash, with a `3.1111` shannon entropy, is `dbflje3q423wbnfjlwejf`, which is given by `password`.
+The least random hash, with a `3.1613022383157516` shannon entropy, is `2a22011a710f20462727e22706a17023a579a720702467256f572a7221f03a1a`, which is given by `zHUvtrHG1sE4al`.
+
+The most random hash, with a `3.9943042503656208` shannon entropy, is `95062ef11cdb7d8834edb4583afd2433a0a670015fb2cae994f1768c6e9bc972`, which is given by `22158872`.
+
+## Round 2
+
+The least random hash, with a `3.1508173248304843` shannon entropy, is `434c488cc4bc46c558c2618c241cc8cbbc34c294c8bb6264411ac4bac63a8611`, which is given by `1621ffa0f7fa29a7ab9f4e7b10f425e559f50d243011249d1550d2ff533e4f6d`.
+
+The most random hash, with a `3.9943042503656208` shannon entropy, is `c13d0e55d85eb6b46a622b9dac8741f1a5d84137f987c06f21ec0b04fa3927e3`, which is given by `7501d70672af4e9c803ea50d1955c283838b90ad8a6d66d30e624c2312fbcf0f`.
 
 ## Hash Matching
 
