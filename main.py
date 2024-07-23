@@ -99,12 +99,12 @@ def family_olympics():
 
     countries = []
     names = []
-    gold_medals = []
-    silver_medals = []
-    bronze_medals = []
-    medals = []
-    populations = [123970000, 334934895, 30000000, 5300000, 41000000]
-    athletes = [556, 615, 478, 212, 381]
+    gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bronze_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    populations = [52081799, 52428290, 123890000, 5338900, 203080756, 68449000, 41012563, 27282542, 5562363, 2825544]
+    athletes = [141, 72, 393, 195, 276, 573, 315, 460, 107, 58]
 
     with open('scraped.csv', mode='r') as file:
         index = 1
@@ -128,11 +128,22 @@ def family_olympics():
     silver_medals = olympics.convert_to_integers(silver_medals)
     bronze_medals = olympics.convert_to_integers(bronze_medals)
     medals = olympics.convert_to_integers(medals)
+    total_medals=medals
 
     medals_per_capita = olympics.medals_per_capita(medals, populations)
     medals_per_athlete = olympics.medals_per_capita(medals, athletes)
 
-    return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete)
+    combined_list = []
+    for name, country, medals in zip(names, countries, medals_per_athlete):
+        combined_list.append({
+            'name': name,
+            'country': country,
+            'medals_per_athlete': medals
+        })
+
+    combined_list = sorted(combined_list, key=lambda x: x['medals_per_athlete'], reverse=True)
+
+    return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = total_medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete, leaderboard = combined_list)
 
 @app.route('/boilerplate')
 def boilerplate():

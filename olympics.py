@@ -5,16 +5,15 @@ import time
 
 def scrape_olympic_data():
 
-    countries = ["Japan*", "United States", "Australia", "New Zealand", "Canada"]
-    people = ["Jack", "Jonah", "Jennifer", "David", "Sean"]
-    populations = [123970000, 334934895, 30000000, 5300000, 41000000]
-    gold_medals = []
-    silver_medals = []
-    bronze_medals = []
-    total_medals = []
+    countries = ["South Korea", "Kenya", "Japan", "New Zealand", "Brazil", "France", "Canada", "Australia", "Norway", "Jamaica"]
+    people = ["Jack", "Mary", "George", "Greg", "Laura", "Sam", "Sean", "Leann", "Jennifer", "David"]
+    gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bronze_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    total_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ranks = []
 
-    url = 'https://en.wikipedia.org/wiki/2020_Summer_Olympics_medal_table'
+    url = 'https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table'
     table_class = 'wikitable'
 
     # Send a GET request to the Wikipedia URL
@@ -47,12 +46,14 @@ def scrape_olympic_data():
 
     if data:
         for row in data:
-            if row[1] in countries:
-                gold_medals.append(row[2])
-                silver_medals.append(row[3])
-                bronze_medals.append(row[4])
-                total_medals.append(row[5])
-                ranks.append(row[0])
+            for country in countries:
+                if country in row[1]:
+                    country_index=countries.index(country)
+                    gold_medals[country_index]=(row[2])
+                    silver_medals[country_index]=(row[3])
+                    bronze_medals[country_index]=(row[4])
+                    total_medals[country_index]=(row[5])
+                    ranks.append(row[0])
             
     data = [countries, people, gold_medals, silver_medals, bronze_medals, total_medals, ranks]
 

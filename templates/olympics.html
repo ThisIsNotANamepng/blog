@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Family Olympics Leaderboard</title>
+<title>FishHagenZin Olympics Leaderboard</title>
 <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
 </head>
@@ -44,13 +44,35 @@
         top: -25px;
     }
 
-    table {
+    .topthree {
         border-collapse: collapse;
         margin: auto;
         text-align: center;
     }
 
-    td {
+    .topthree img {
+        max-width: 100%;
+        max-height: 100%;
+        width: 500px;
+        height: 500px;
+    }
+
+    .therest {
+        margin: auto;
+        text-align: center;
+        font-size: 30px;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 75%;
+    }
+
+    .theresttd, .therestth {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .topthreetd {
         padding-bottom: 50px;
         padding-top: 50px;
     }
@@ -63,7 +85,7 @@
 
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Default 3-column layout */
+        grid-template-columns: repeat(2, 1fr); /* Default 3-column layout */
         gap: 10px;
     }
 
@@ -74,16 +96,6 @@
         color: white;
     }
 
-    .item1 { /*background-color: #ff5733;*/ }
-    .item2 { /*background-color: #ffc300;*/ }
-    .item3 { /*background-color: #ff206e;*/ }
-    .item4 { /*background-color: #23aaff;*/ }
-    .item5 { background-color: #4caf50; }
-    .item6 { background-color: #9c27b0; }
-    .item7 { background-color: #3f51b5; }
-    .item8 { background-color: #ff9800; }
-    .item9 { background-color: #607d8b; }
-
     @media only screen and (max-width: 768px) {
         .grid-container {
             grid-template-columns: 1fr; /* Switch to 1-column layout for narrow screens */
@@ -92,16 +104,52 @@
 
     @media only screen and (min-width: 769px) and (max-width: 1024px) {
         .grid-container {
-            grid-template-columns: repeat(2, 1fr); /* Switch to 2-column layout for medium screens */
+            grid-template-columns: 1fr; /* Switch to 1-column layout for narrow screens */
         }
     }
 
+    #countdown {
+        font-size: 60px;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     
+    var countDownDate = new Date("Jul 26, 2024 12:30:00").getTime();
+
+    // Update the countdown every 1 second
+    var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the countdown date
+        var distance = countDownDate - now;
+
+        // Calculate days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="countdown"
+        if (distance > 0) {
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+        } else {
+            clearInterval(x);
+            document.getElementById("countdown").style.display = "none";
+            document.getElementById("intro").style.display = "none";
+
+        }
+    }, 1000);
+
+
+
     document.addEventListener("DOMContentLoaded", function() {
         // Data for the chart
         var data = {
@@ -175,6 +223,8 @@
                 borderWidth: 1
             }]
         };
+
+        console.log(data)
 
         // Configuration options
         var options = {
@@ -278,16 +328,36 @@
     });
 </script>
 
+<h1 id="intro" style="text-align: center; margin-top: 50px;">Time until FishHagenZin Olympics begins:</h1>
+<div id="countdown"></div>
 
-<table>
-    <caption>Highest Fruit Score: <b>83</b></caption>
-    <tr>
-        <td class="silver"><img src="/static/face.jpg"><br/><span>675</span></td>
-        <td class="gold"><img src="/static/face.jpg"><br/><span>83</span></td>
-        <td class="bronze"><img src="/static/face.jpg"><br/><span>34</span></td>
-    </tr>
-</table>
+<div>
+    <table class="topthree">
+        <tr>
+            <td class="silver topthreetd"><img src="/static/olympics/{{ leaderboard[1].name }}.jpg"><br/><span>2</span></td>
+            <td class="gold topthreetd"><img src="/static/olympics/{{ leaderboard[0].name }}.jpg"><br/><span>1</span></td>
+            <td class="bronze topthreetd"><img src="/static/olympics/{{ leaderboard[2].name }}.jpg"><br/><span>3</span></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <table class="therest">
+        <tr>
+          <th class="therestth">Name</th>
+          <th class="therestth">Country</th>
+          <th class="therestth">Medals Per Athlete</th>
+        </tr>
+        {% for item in leaderboard %}
+        <tr>
+            <td class="theresttd">{{ item.name }}</td>
+            <td class="theresttd">{{ item.country }}</td>
+            <td class="theresttd">{{ item.medals_per_athlete }}</td>
+        </tr>
+        {% endfor %}
+      </table> 
+</div>
 
+<br><br><br><br><br><br><br>
 <div class="grid-container">
     <div class="grid-item item1">
         <canvas id="totalsBarChart" width="400" height="200"></canvas>
@@ -301,11 +371,6 @@
     <div class="grid-item item4">
         <canvas id="perPopulationBarChart" width="400" height="400"></canvas>
     </div>
-    <div class="grid-item item5">5</div>
-    <div class="grid-item item6">6</div>
-    <div class="grid-item item7">7</div>
-    <div class="grid-item item8">8</div>
-    <div class="grid-item item9">9</div>
 </div>
 
 </body>
