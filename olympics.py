@@ -5,7 +5,7 @@ import time
 
 def scrape_olympic_data():
 
-    countries = ["South Korea", "Kenya", "Japan", "New Zealand", "Brazil", "France", "Canada", "Australia", "Norway", "Jamaica", "Ireland"]
+    countries = ["🇰🇷 South Korea", "🇰🇪 Kenya", "🇯🇵 Japan", "🇳🇿 New Zealand", "🇧🇷 Brazil", "🇫🇷 France", "🇨🇦 Canada", "🇦🇺 Australia", "🇳🇴 Norway", "🇯🇲 Jamaica", "🇮🇪 Ireland"]
     people = ["Jack", "Mary", "George", "Greg", "Laura", "Sam", "Sean", "LeAnn", "Jennifer", "David", "Jonah"]
     gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -47,7 +47,8 @@ def scrape_olympic_data():
     if data:
         for row in data:
             for country in countries:
-                if country in row[1]:
+                #print(country[3:])
+                if country[3:] in row[1]:
                     country_index=countries.index(country)
                     gold_medals[country_index]=(row[2])
                     silver_medals[country_index]=(row[3])
