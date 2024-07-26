@@ -5,12 +5,12 @@ import time
 
 def scrape_olympic_data():
 
-    countries = ["South Korea", "Kenya", "Japan", "New Zealand", "Brazil", "France", "Canada", "Australia", "Norway", "Jamaica"]
-    people = ["Jack", "Mary", "George", "Greg", "Laura", "Sam", "Sean", "Leann", "Jennifer", "David"]
-    gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    bronze_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    total_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    countries = ["South Korea", "Kenya", "Japan", "New Zealand", "Brazil", "France", "Canada", "Australia", "Norway", "Jamaica", "Ireland"]
+    people = ["Jack", "Mary", "George", "Greg", "Laura", "Sam", "Sean", "LeAnn", "Jennifer", "David", "Jonah"]
+    gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bronze_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    total_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ranks = []
 
     url = 'https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table'

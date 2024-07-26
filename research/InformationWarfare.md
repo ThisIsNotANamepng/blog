@@ -1,59 +1,23 @@
-**The Intersection of Social Movements and Disinformation: Threats to Democracy in Modern Times**
+# Introduction to Information Warfare
 
-**Abstract**
-This paper examines the intersection of social movements and disinformation in modern times, arguing that the proliferation of false or misleading information poses a significant threat to democratic 
-discourse. We contend that the success of social movements is often tied to their ability to garner widespread support from ordinary citizens, but this can be undermined by deliberate attempts to manipulate 
-public opinion. Through a critical analysis of the role of disinformation in modern society, we highlight the importance of individual actions and institutional reforms aimed at promoting transparency, 
-accountability, and media literacy.
+This is an academic style paper designed to introduce a field of security I came up myself. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, things might change as I do more research and change my mind. 
 
-**Introduction**
-Social movements have long played a crucial role in driving democratic progress, challenging entrenched power structures, and promoting greater equality and justice. However, the success of these movements is 
-often tied to their ability to garner widespread support from ordinary citizens. In modern times, this can be undermined by the proliferation of disinformation and propaganda, which poses a significant threat 
-to democratic discourse.
+##  Introduce White Noise. Talk about the themes of reality not being what it appears, sheeple following what is fake and not questioning what is real
 
-**The Rise of Disinformation**
-In recent years, the rise of social media platforms has created unprecedented opportunities for those in power to manipulate public opinion and undermine the effectiveness of social movements. Through 
-targeted advertising campaigns, politicians and special interest groups can push false or misleading information, creating a false narrative that is difficult to correct. Social media algorithms, designed to 
-prioritize engagement over accuracy, can amplify misinformation, further eroding trust in institutions.
+## Information Warfare
 
-**The Hard Right GOP: A Case Study**
-The hard right GOP has demonstrated an ability to utilize disinformation campaigns to push a particular narrative and undermine the legitimacy of political opponents. Through targeted advertising campaigns 
-and coordinated messaging, they have successfully created a false narrative that paints their political opponents as corrupt and dishonest. This has been achieved through a range of tactics, including:
+I define Information Warfare as the discipline of controlling the media exposed to a target. The target could be an individual, as in a high ranking elected official, or a group, such as the voters in a political district. 
 
-* Targeted advertising campaigns: The hard right GOP has invested heavily in online advertising, allowing them to target specific demographics and tailor their message to resonate with those groups.
-* Coordinated messaging: Through coordinated messaging efforts, the hard right GOP has created a unified narrative that is designed to resonate with their base.
+While traditional Information Security is about keeping attackers from reading secured data, Information Warfare is about authenticating digested data. 
 
-**TikTok: A New Platform for Disinformation**
-The rise of TikTok has created new opportunities for disinformation to spread. With its highly engaging and algorithm-driven feed, TikTok can amplify misinformation, further eroding trust in institutions. The 
-platform's lack of transparency and inability to fact-check content have raised concerns about the potential for disinformation to spread.
+Influence campaigns are a well known subset of Information Warfare. There are many examples of consequential influence campaigns, such as Russian influence on social media during the 2020 election. Influence campaigns are campaigns intended to change the opinion of a target through exposure to certain media, often with disinformation. They also usually target platforms which allow users to create their own content legally, such as social media. IW is not limited by that requiremnt, it does not distinguish a disinformation social media post from a hacked TV showing a false news channel. While a part of IW, there is more to it which makes it its own discipline. 
 
-**Politicians: The New Propagandists**
-In modern times, politicians are increasingly using their power to manipulate public opinion and undermine the effectiveness of social movements. Through a range of tactics, including advertising campaigns, 
-paid influencers, and attempts to disrupt the work of investigative reporters, they can create a false narrative that is designed to resonate with their base.
+The definition also doesn't distinguish between false and true information. Likely the best known examples will be influence campaigns spreading disinformation, but controlling the flow of true information would also fall in this category, for example, an opposition force could wage warfare against a authoritarian rival by exposing information about democracy and freedom into the Totalitarian State's private internet, where it usually is illegal to keep or spread. 
 
-**Individual Actions: Protecting Yourself from Disinformation**
-In light of these challenges, individual actions are essential for protecting oneself from disinformation. This involves:
+### A New Computing Age
 
-* Being mindful of biases and agendas: It is essential to be aware of the biases and agendas of those presenting information.
-* Verifying information through reputable sources: Information should be verified through reputable sources before being accepted as true.
-* Engaging in critical thinking: Critical thinking is essential for evaluating online content and identifying misinformation.
+Obviously, Information Warfare becomes more influential with the rise of computers and the internet. We now get a large part of our reality itself from screens. With the rise of AI its also possible to create plausible, targeted fantasies at scale with minimal cost when compared to the human element. This allows IW to take off to a real, consequential discipline of cybersecurity. 
 
-**Institutional Reforms: Promoting Transparency, Accountability, and Media Literacy**
-In addition to individual actions, institutional reforms are essential for promoting transparency, accountability, and media literacy. This includes:
+I will go into concrete examples in the second part of this article [Applied Information Warfare](/research/AppliedInformationWarfare)
 
-* Implementing measures to prevent the spread of disinformation on social media platforms.
-* Holding politicians accountable for spreading false information.
-* Protecting journalists from attempts to intimidate or discredit them.
 
-**Conclusion**
-The intersection of social movements and disinformation poses a significant threat to democracy in modern times. As we move forward, it is essential that individuals, institutions, and policymakers work 
-together to promote transparency, accountability, and media literacy. By doing so, we can ensure that democratic discourse remains robust and resilient in the face of increasingly sophisticated attempts to 
-manipulate public opinion.
-
-**References**
-
-1. Bennett, W. L., & Pfetsch, K. (2018). The search for a new liberal script. **Political Communication**, 35(3), 343-355.
-2. Blum, S. E. (2020). **The Rise of the Right: From Goldwater to Trump**. Routledge.
-3. Budak, C., & Recuero, T. R. (2019). **Disinformation and Manipulation on Social Media**. Palgrave Macmillan.
-4. Coleman, S. E. (2020). **The Digital Public Sphere: A Comparative Study of Online Activism in the United States and Germany**. Routledge.
-5. Lewis, P. (2018). **Fake News: The Rise of False Information in the Digital Age**. Routledge.
