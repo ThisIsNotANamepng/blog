@@ -50,9 +50,7 @@ def scrape_olympic_data():
                 del row[0]
             
             for country in countries:
-                print(country[3:], row[0])
                 if country[3:] in row[0]:
-                    print(row[2])
                     country_index=countries.index(country)
                     gold_medals[country_index]=(row[1])
                     silver_medals[country_index]=(row[2])
@@ -60,9 +58,6 @@ def scrape_olympic_data():
                     total_medals[country_index]=(row[4])
                     ranks.append(row[0])
 
-                    #print(country[3:])
-                    #print(row[5])
-            
     data = [countries, people, gold_medals, silver_medals, bronze_medals, total_medals, ranks]
 
     save_scraped(data)
