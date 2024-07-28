@@ -1,8 +1,8 @@
-# Applied Information Warfare
+# Applied Information Influence Operations
 
 This is an academic style paper designed to introduce a field of security I came up myself. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, things might change as I do more research and change my mind. 
 
-In my [introductory article to Information Warfare](/research/InformationWarfare) I introduced my definition of Information Warfare, in order to keep up with this article I suggest you read it first. 
+In my [introductory article to Information Influence Operations](/research/InformationWarfare) I introduced my definition of Information Influence Operations, in order to keep up with this article I suggest you read it first. 
 
 These are examples of different examples of IW, later in the article I will classify them as branches within IW.
 
@@ -21,10 +21,6 @@ Examples of showing disinformation to a single or multiple people in order to ch
 ## Population Control
 
 Examples of restricting access to certain information or media to a local populace (China, Russia)
-
-## Dissent Operations
-
-Examples of operations sowing conflicting information, in order to make participants of a group distrust each other
 
 ## Health Operations
 
