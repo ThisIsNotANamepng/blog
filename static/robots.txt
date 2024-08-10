@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /articles/
+Allow: /research/
+Disallow: /

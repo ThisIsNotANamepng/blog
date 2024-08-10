@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import markdown
 from pathlib import Path
 import olympics
@@ -8,6 +8,11 @@ import os
 import csv 
 
 app = Flask(__name__)
+
+def validateUserAgent(useragent):
+    print(useragent)
+
+    return True
 
 @app.route('/')
 def index():
@@ -41,6 +46,47 @@ def tag(tag):
 @app.route('/research')
 def serve_research():
     return render_template('research.html')
+
+@app.route('/t', methods=['GET'])
+def get_color():
+    # Returns the encrypted color code from color.txt
+    # Is one letter so bots can't crawl for it but also makes the request smaller
+
+    if not validateUserAgent(request.headers.get('User-Agent')):
+        return("Fuck you")
+
+    with open("color.txt", 'r') as f:
+        color = f.read()
+    
+    return color
+
+@app.route('/ch', methods=['GET'])
+def change():
+    # Takes an encrypted color code and a password
+    # If the password is right, it saves the encrypted code to color.txt 
+
+    given_password = request.args.get('pas')
+
+    if given_password==None:
+        return 'Fuck off and die'
+    else:
+        with open("password.txt", 'r') as f:
+            good_password = f.read()
+        
+        if given_password!=good_password:
+            return 'Fuck off and die'
+        else:
+            # Password was passed and its correct
+            given_color = request.args.get('color')
+
+            if given_color==None:
+                return "What the hell dude"
+            else:
+                # Password was correct and passes a new color
+                with open("color.txt", 'w') as f:
+                    f.write(given_color)
+            
+    return 'Changed'
 
 @app.route('/boilerplate')
 def serve_boilerplate():
@@ -153,6 +199,15 @@ def boilerplate():
     )
 
     return md_template_string
+
+@app.route('/robots.txt')
+def robots():
+    return send_file('static/robots.txt')
+
+@app.route('/security.txt')
+@app.route('/.well-known/security.txt')
+def security_warn():
+    return send_file('static/security.txt')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

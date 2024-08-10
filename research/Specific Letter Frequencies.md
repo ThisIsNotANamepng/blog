@@ -1,6 +1,6 @@
 # Enhanced Letter Frequencies
 
-Analysing letter frequencies is a standard tool in breaking rudimentary ciphers. Its a base for poeple learning cryptography. Usually one would use a classic letter frequency chart such as [https://en.wikipedia.org/wiki/Letter_frequency](https://en.wikipedia.org/wiki/Letter_frequency). 
+Analyzing letter frequencies is a standard tool in breaking rudimentary ciphers. Its a base for people learning cryptography. Usually one would use a classic letter frequency chart such as [https://en.wikipedia.org/wiki/Letter_frequency](https://en.wikipedia.org/wiki/Letter_frequency). 
 
 Charts like this are the results of measuring the frequencies of large amounts of raw text. They work well, if you have a text at least a few sentences long you can usually make enough educated guesses.
 
@@ -27,7 +27,7 @@ the letter 'e' will appear about 16% of the time. This is pretty close to what t
 
 ### The Written Word
 
-The next step is to analyze the frequencies of words in a real text. So where do we find large amounts of easily readable (and legally usable) text? The standard answer is usually a.) **Books from project Gutenberg** and b.) **Wikipedia**. Both are good answers, they provide large, usable, human-generated text corpuses which are easy to parse and free to use. This is the approach that most letter frequency tables (and many other projects) use. But there's one problem for us. We are trying to break messages written somewhat recently by a human. Most people nowdays don't talk like 
+The next step is to analyze the frequencies of words in a real text. So where do we find large amounts of easily readable (and legally usable) text? The standard answer is usually a.) **Books from project Gutenberg** and b.) **Wikipedia**. Both are good answers, they provide large, usable, human-generated text corpora (corpuses?) which are easy to parse and free to use. This is the approach that most letter frequency tables (and many other projects) use. But there's one problem for us. We are trying to break messages written somewhat recently by a human. Most people nowdays don't talk like 
 
 ```
 But look! here come more crowds, pacing straight for the water, and seemingly bound for a dive. Strange! Nothing will content them but the extremest limit of the land; loitering under the shady lee of yonder warehouses will not suffice. No. They must get just as nigh the water as they possibly can without falling in. And there they stand—miles of them—leagues. Inlanders all, they come from lanes and alleys, streets and avenues—north, east, south, and west. Yet here they all unite. Tell me, does the magnetic virtue of the needles of the compasses of all those ships attract them thither?
@@ -57,7 +57,7 @@ A Riemann surface X is a topological space that is locally homeomorphic to an op
 ```
 (From the Riemann–Roch theorem on Wikipedia)
 
-These are obviously handpicked to make a point, but the problem still remains. The texts from Project Gutenberg are most often in the public domain because they were written at least 95 years ago, and the text from Wikipedia is written like an encyclopedia. That means that the text is often too technical or written in a style of English that isn't used today. You will be hard pressed to find instances of today's conversational english in either of the corpuses. 
+These are obviously handpicked to make a point, but the problem still remains. The texts from Project Gutenberg are most often in the public domain because they were written at least 95 years ago, and the text from Wikipedia is written like an encyclopedia. That means that the text is often too technical or written in a style of English that isn't used today. You will be hard pressed to find instances of today's conversational english in either of the corpora. 
 
 That takes us to the last option.
 
@@ -67,3 +67,6 @@ The text that we are trying to break is likely modern conversational english, so
 
 Now we feed the new list through our fancy letter frequency calculator and get a new set of letter frequencies. 
 
+## Results
+
+You can find my results in my [Github Repo](https://github.com/ThisIsNotANamepng/LetterFrequencyData)
