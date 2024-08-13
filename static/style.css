@@ -1,4 +1,3 @@
-
 .markdown-content {
     margin: 20px;
     padding: 20px;
@@ -7,6 +6,7 @@
 
 :root {
     --accent: white;
+    color-scheme: light dark;
 }
 
 code {

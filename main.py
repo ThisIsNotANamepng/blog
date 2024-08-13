@@ -1,18 +1,12 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import markdown
 from pathlib import Path
-import olympics
 import time
 import tags
 import os
 import csv 
 
 app = Flask(__name__)
-
-def validateUserAgent(useragent):
-    print(useragent)
-
-    return True
 
 @app.route('/')
 def index():
@@ -46,47 +40,6 @@ def tag(tag):
 @app.route('/research')
 def serve_research():
     return render_template('research.html')
-
-@app.route('/t', methods=['GET'])
-def get_color():
-    # Returns the encrypted color code from color.txt
-    # Is one letter so bots can't crawl for it but also makes the request smaller
-
-    if not validateUserAgent(request.headers.get('User-Agent')):
-        return("Fuck you")
-
-    with open("color.txt", 'r') as f:
-        color = f.read()
-    
-    return color
-
-@app.route('/ch', methods=['GET'])
-def change():
-    # Takes an encrypted color code and a password
-    # If the password is right, it saves the encrypted code to color.txt 
-
-    given_password = request.args.get('pas')
-
-    if given_password==None:
-        return 'Fuck off and die'
-    else:
-        with open("password.txt", 'r') as f:
-            good_password = f.read()
-        
-        if given_password!=good_password:
-            return 'Fuck off and die'
-        else:
-            # Password was passed and its correct
-            given_color = request.args.get('color')
-
-            if given_color==None:
-                return "What the hell dude"
-            else:
-                # Password was correct and passes a new color
-                with open("color.txt", 'w') as f:
-                    f.write(given_color)
-            
-    return 'Changed'
 
 @app.route('/boilerplate')
 def serve_boilerplate():
@@ -130,7 +83,7 @@ def serve_tags(research):
     articles = tags.get_articles_with_tag(tag)
     return render_template('tag.html', tag=tag, articles=articles)
 
-
+"""
 @app.route('/olympics')
 def family_olympics():
 # Handles the family olympics data
@@ -190,6 +143,7 @@ def family_olympics():
     combined_list = sorted(combined_list, key=lambda x: x['medals_per_athlete'], reverse=True)
 
     return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = total_medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete, leaderboard = combined_list)
+"""
 
 @app.route('/boilerplate')
 def boilerplate():
@@ -199,6 +153,50 @@ def boilerplate():
     )
 
     return md_template_string
+
+@app.route('/lampgetqthhbhbuhohoahlxakkhcv', methods=['GET'])
+def get_color():
+    # For the lamp
+    # Returns the encrypted color code from color.txt
+    # Is one letter so bots can't crawl for it but also makes the request smaller
+
+    with open("color.txt", 'r') as f:
+        color = f.read()
+    
+    return color
+
+@app.route('/lampchangewqubmzbiqcwcwcwcwecqqwcszcwecwev', methods=['POST'])
+def change():
+    # For the lamp
+    # Takes a color code and a password
+    # If the password is right, it saves the code to color.txt 
+
+    json_data = request.get_json()
+    
+    # Check if JSON data is None
+    if json_data is None:
+        return jsonify({"Go": "away"}), 400
+    
+    color = json_data.get('color')
+    password = json_data.get('pas')
+    
+    if color is None or password is None:
+        return jsonify({"Go": "away"}), 400
+    
+    with open("password.txt", 'r') as f:
+        good_password = f.read()
+    
+    if password!=good_password:
+        return jsonify({"Go": "away"}), 400
+    else:
+        with open("color.txt", 'w') as f:
+            f.write(color)
+            
+    #print(color, password)
+
+    return ''
+
+# I thought about adding a website page with a color wheel for us to better input a color, but I feel that takes away the embedded feel and I'm tired
 
 @app.route('/robots.txt')
 def robots():
