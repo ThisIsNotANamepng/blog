@@ -14,7 +14,6 @@
 	--preformatted: #444;
 	--marked: #fd3;
 	--disabled: #efefef
-	color-scheme: dark;
 }
 
 @media (prefers-color-scheme:dark) {
