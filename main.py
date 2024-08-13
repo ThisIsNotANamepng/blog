@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, send_file, jsonify
+from flask import Flask, render_template, request, send_file, jsonify, redirect
 import markdown
 from pathlib import Path
 import time
 import tags
 import os
 import csv 
+import hashlib
 
 app = Flask(__name__)
 
@@ -196,7 +197,27 @@ def change():
 
     return ''
 
-# I thought about adding a website page with a color wheel for us to better input a color, but I feel that takes away the embedded feel and I'm tired
+@app.route('/lamp_color_picker')
+def lamp_color_picker():
+    # The route for the lamp color picker 
+    return render_template('color.html')
+
+@app.route('/lamp_color_picker_api_ljbwefobwejflwejfljwef12edwqdqdsf', methods=['POST'])
+def lamp_color_picker_api():
+    # The route for the color picker to send the color to
+    color = request.form.get('color')
+    password = request.form.get('password')
+
+    password = hashlib.sha256(password.encode()).hexdigest()
+
+    if password != "3cd71abb4a6b6be8422ab9cfbb3c28e906cf8f71f73e78a023b08d1a386e16e7":
+        return redirect("/")
+    
+    # Translate color to rgb values and put in color.txt
+    color = color.lstrip('#')
+    with open("color.txt", "w") as file: file.write(str(tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))[1:-1].replace(" ", ""))
+
+    return redirect("/lamp_color_picker")
 
 @app.route('/robots.txt')
 def robots():
