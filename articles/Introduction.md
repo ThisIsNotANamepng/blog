@@ -7,6 +7,8 @@ I am interested in cyber threat analysis, I want to combine what I learn in poli
 
 Ultimately in my career I want to go into intelligence, specifically cyber threat analysis.
 
+I'm the president of UWEC's Model UN Club, the treasurer for UWEC's Student Association for COmputing Machinery, and a member of UWEC's DECA.
+
 I'm in tech, so I'm obliged to have the stereotypical hobbies of going outside, hiking, kayaking, and reading. I like to paint, I play the trumpet, guitar, and ukulele.
 
 I also train in martial arts, namely Aikido, Karate, and Arnis.
