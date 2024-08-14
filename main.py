@@ -54,6 +54,7 @@ def serve_aricle_markdown(article):
 
     with open("articles/"+article+".md", 'r') as file:
         content = file.readlines()[1:]
+        title = next((item for item in content if item.startswith('#')), None)[2:]
         content = ''.join(content)
 
     # Convert Markdown to HTML
@@ -61,7 +62,7 @@ def serve_aricle_markdown(article):
 
     # Render the HTML with a template
     #return md.convert(content)
-    return render_template('article.html', content=html)
+    return render_template('article.html', content=html, title=title)
 
 
 @app.route('/research/<research>')
@@ -71,16 +72,19 @@ def serve_specific_research(research):
         return render_template('404.html')
 
     with open("research/"+research+'.md', 'r') as file:
-        content = file.read()
+        content = file.readlines()
+        title = next((item for item in content if item.startswith('#')), None)[2:]
+        print(title)
+        content = ''.join(content)
         
     # Convert Markdown to HTML
     html = markdown.markdown(content)
 
     # Render the HTML with a template
-    return render_template('article.html', content=html)
+    return render_template('article.html', content=html, title=title)
 
 @app.route('/tag/<research>')
-def serve_tags(research):
+def serve_tags():
     articles = tags.get_articles_with_tag(tag)
     return render_template('tag.html', tag=tag, articles=articles)
 
