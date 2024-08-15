@@ -195,7 +195,18 @@ def change():
         return jsonify({"Go": "away"}), 400
     else:
         with open("color.txt", 'w') as f:
-            f.write(color)
+            print(color)
+            towrite=""
+
+            for i in color: 
+                if i not in ["[", "]", " "]:
+                    towrite+=str(i)
+                towrite+=","
+
+            towrite=towrite[0:-1]
+            print(towrite)
+
+            f.write(towrite)
             
     #print(color, password)
 
