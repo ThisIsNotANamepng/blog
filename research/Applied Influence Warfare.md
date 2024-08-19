@@ -2,7 +2,7 @@
 
 This is an academic style paper designed to introduce a field of security I came up myself. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, things might change as I do more research and change my mind. 
 
-In my [introductory article to Influence Warfare](/research/Influence Warfare) I introduced my definition of Influence Warfare, in order to keep up with this article I suggest you read it first. 
+In my [introductory article to Influence Warfare](/research/Influence Warfare) I introduced my definition of Influence Warfare, I suggest you read it first in order to understand this article. 
 
 These are examples of different examples of IW, later in the article I will classify them as branches within IW.
 

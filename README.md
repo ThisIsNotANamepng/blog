@@ -21,3 +21,5 @@ TODO:
     - Research forwarding traffic to another service (IE forwarding domain.tld/minecraft to the minecraft server)
     - Make it index all articles when the server boots up. I designed the tag and article search system to grab all of the tags and article names from the files, assuming that they could be hot swapped, but they can't, so I might as well switch to a one time generated index which generates after the daily boot
     - Fix /boilerplate
+    - Add cookie to lamp color picker so no more passwords
+    
