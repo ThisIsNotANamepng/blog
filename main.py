@@ -6,35 +6,54 @@ import tags
 import os
 import csv 
 import hashlib
+import nh3
 
 app = Flask(__name__)
 
+global tagss
+global researchh
+global articless
+
+tagss = set()
+researchh = set()
+articless = set()
+
+for filename in os.listdir('articles'):
+    if filename.endswith('.md'):
+        filepath = os.path.join('articles', filename)
+        tagss.update(tags.parse_markdown_tags(filepath))
+
+for filename in os.listdir('research'):
+    if filename.endswith('.md'):
+        filepath = os.path.join('articles', filename)
+        researchh.add(filename[:-3])
+
+for filename in os.listdir('articles'):
+    if filename.endswith('.md'):
+        filepath = os.path.join('articles', filename)
+        articless.add(filename[:-3])
+
 @app.route('/')
 def index():
-    tagss = set()
-    researchh = set()
-    articless = set()
-
-    for filename in os.listdir('articles'):
-        if filename.endswith('.md'):
-            filepath = os.path.join('articles', filename)
-            tagss.update(tags.parse_markdown_tags(filepath))
-
-    for filename in os.listdir('research'):
-        if filename.endswith('.md'):
-            filepath = os.path.join('articles', filename)
-            researchh.add(filename[:-3])
-
-    for filename in os.listdir('articles'):
-        if filename.endswith('.md'):
-            filepath = os.path.join('articles', filename)
-            articless.add(filename[:-3])
-
+    global tagss
+    global researchh
+    global articless
 
     return render_template('index.html', tags=tagss, articles=articless, research=researchh)
 
 @app.route('/tag/<tag>')
 def tag(tag):
+    global tagss
+    
+    tag = nh3.clean(tag)
+
+    for char in tag:
+        if not char.isalpha():
+            return 'Are you trying to hack me?'
+
+    if tag not in tagss:
+        return "You can't do that"
+
     articles = tags.get_articles_with_tag(tag)
     return render_template('tag.html', tag=tag, articles=articles)
 
