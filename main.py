@@ -25,6 +25,11 @@ for filename in os.listdir('articles'):
 
 for filename in os.listdir('research'):
     if filename.endswith('.md'):
+        filepath = os.path.join('research', filename)
+        tagss.update(tags.parse_markdown_tags(filepath))
+
+for filename in os.listdir('research'):
+    if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
         researchh.add(filename[:-3])
 
@@ -48,31 +53,37 @@ def tag(tag):
     tag = nh3.clean(tag)
 
     for char in tag:
-        if not char.isalpha():
+        if not char.isalpha() and char != " ":
             return 'Are you trying to hack me?'
 
     if tag not in tagss:
         return "You can't do that"
 
-    articles = tags.get_articles_with_tag(tag)
-    return render_template('tag.html', tag=tag, articles=articles)
+    articles = tags.get_articles_with_tag(tag, 'articles')
+    research = tags.get_articles_with_tag(tag, 'research')
+
+    return render_template('tag.html', tag=tag, articles=articles, research=research)
 
 @app.route('/research')
 def serve_research():
     return render_template('research.html')
 
+@app.route('/boilerplates')
 @app.route('/boilerplate')
 def serve_boilerplate():
     return render_template('boilerplates.html')
 
 @app.route('/articles/<article>')
-def serve_aricle_markdown(article):
+def serve_article_markdown(article):
 
-    if Path("articles/"+article+".md").exists() == False:
+    if not Path("articles/"+article+".md").exists():
         return render_template('404.html')
 
     with open("articles/"+article+".md", 'r') as file:
-        content = file.readlines()[1:]
+        content = file.readlines()
+
+        if "#" not in content[0]: content = content[1:]
+            
         title = next((item for item in content if item.startswith('#')), None)[2:]
         content = ''.join(content)
 
@@ -80,20 +91,21 @@ def serve_aricle_markdown(article):
     html = markdown.markdown(content)
 
     # Render the HTML with a template
-    #return md.convert(content)
     return render_template('article.html', content=html, title=title)
 
 
 @app.route('/research/<research>')
 def serve_specific_research(research):
 
-    if Path("research/"+research+".md").exists() == False:
+    if not Path("research/"+research+".md").exists():
         return render_template('404.html')
-
+    
     with open("research/"+research+'.md', 'r') as file:
         content = file.readlines()
+
+        if "#" not in content[0]: content = content[1:]
+
         title = next((item for item in content if item.startswith('#')), None)[2:]
-        print(title)
         content = ''.join(content)
         
     # Convert Markdown to HTML
@@ -102,10 +114,13 @@ def serve_specific_research(research):
     # Render the HTML with a template
     return render_template('article.html', content=html, title=title)
 
+"""
+# I don't know what this is
 @app.route('/tag/<research>')
 def serve_tags():
     articles = tags.get_articles_with_tag(tag)
     return render_template('tag.html', tag=tag, articles=articles)
+"""
 
 """
 @app.route('/olympics')
@@ -263,5 +278,5 @@ def security_warn():
     return send_file('static/security.txt')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
-    #app.run(host="127.0.0.1", debug=True)
+    #app.run(host="0.0.0.0", debug=True)
+    app.run(host="127.0.0.1", debug=True)

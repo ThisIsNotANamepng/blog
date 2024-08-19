@@ -1,3 +1,4 @@
+Influence Warfare
 # Influence Warfare
 
 This is an academic style paper designed to introduce a field of security I came up myself. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, things might change as I do more research and change my mind. 
@@ -40,4 +41,4 @@ According to a survey by the Pew Research Center, 65% of the surveyed users said
 
 One more difference between influence campaigns and influence warfare is the timeframe. As all major societies rely on the internet rely on the internet, all societies present an attack surface for enemies to exploit. Also, as the attack surface is online, [attributing such an attack to a party is difficult to do with confidence](https://www.schneier.com/blog/archives/2015/03/attack_attribut_1.html), which allows for major attacks by enemies with little to no response. This all opens the door for prolonged, broad influence warfare against an enemy in cyberspace as opposed to a influence campaign which lasts for a short time in order to reach a specific goal. 
 
-This article is an abstract introduction to Influence Warfare, the following article [Applied Influence Warfare](/research/AppliedInfluenceWarfare) discusses tangible examples.
+This article is an abstract introduction to Influence Warfare, the following article [Applied Influence Warfare](/research/Applied Influence Warfare) discusses tangible examples.

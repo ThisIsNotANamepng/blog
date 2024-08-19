@@ -1,3 +1,4 @@
+Cryptography
 # Phrase Cipher
 
 I designed the Phrase Cipher myself, obviously don't use it for anything requiring true security. As a budding student of [cybersecurity](/tags/cybersecurity) I went through a phase of cryptography, which I still hold a fascination for. [I think its relatively secure against most attacks](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html).

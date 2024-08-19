@@ -13,11 +13,13 @@ def parse_markdown_tags(filename):
         
     return tags
 
-def get_articles_with_tag(tag):
+def get_articles_with_tag(tag, type):
+    # type is 'articles' or 'research'
+
     articles = []
-    for filename in os.listdir('articles'):
+    for filename in os.listdir(type):
         if filename.endswith('.md'):
-            filepath = os.path.join('articles', filename)
+            filepath = os.path.join(type, filename)
             tags = parse_markdown_tags(filepath)
             if tag in tags:
                 articles.append({'title': filename[:-3], 'tags': tags})
