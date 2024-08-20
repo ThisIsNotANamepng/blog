@@ -12,3 +12,4 @@ I'm in tech, so I'm obliged to have the stereotypical hobbies of going outside, 
 
 I also train in martial arts, namely Aikido, Karate, and Arnis.
 
+You can find me on [LinkedIn](https://linkedin.com/in/jack-hagen-76580b293) and [Github](https://github.com/ThisIsNotANamepng). I don't use any other social media. To contact me you can use [security.z1jp1@passinbox.com](mailto:security.z1jp1@passinbox.com)
