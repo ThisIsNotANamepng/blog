@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, jsonify, redirect
+from flask import Flask, render_template, request, send_file, jsonify, redirect, session
 import markdown
 from pathlib import Path
 import time
@@ -9,6 +9,8 @@ import hashlib
 import nh3
 
 app = Flask(__name__)
+
+app.secret_key = b'm#HS3Z65D&TFIyg(&^**d76^*fd66d!TjT6Kzr'
 
 global tagss
 global researchh
@@ -248,7 +250,7 @@ def change():
 
 @app.route('/lamp_color_picker')
 def lamp_color_picker():
-    # The route for the lamp color picker 
+    # The route for the lamp color picker for browsers
     return render_template('color.html')
 
 @app.route('/lamp_color_picker_api_ljbwefobwejflwejfljwef12edwqdqdsf', methods=['POST'])
@@ -257,11 +259,18 @@ def lamp_color_picker_api():
     color = request.form.get('color')
     password = request.form.get('password')
 
+    print(session)
+
     password = hashlib.sha256(password.encode()).hexdigest()
+
+    if 'password' in session and password == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855":
+        password = session['password']
 
     if password != "3cd71abb4a6b6be8422ab9cfbb3c28e906cf8f71f73e78a023b08d1a386e16e7":
         return redirect("/")
     
+    session['password'] = password
+
     # Translate color to rgb values and put in color.txt
     color = color.lstrip('#')
     with open("color.txt", "w") as file: file.write(str(tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))[1:-1].replace(" ", ""))

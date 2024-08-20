@@ -21,4 +21,3 @@ TODO:
     - Research forwarding traffic to another service (IE forwarding domain.tld/minecraft to the minecraft server)
     - Fix /boilerplate
     - Add cookie to lamp color picker so no more passwords
-    - The tag is being included 
