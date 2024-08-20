@@ -70,11 +70,6 @@ def tag(tag):
 def serve_research():
     return render_template('research.html')
 
-@app.route('/boilerplates')
-@app.route('/boilerplate')
-def serve_boilerplate():
-    return render_template('boilerplates.html')
-
 @app.route('/articles/<article>')
 def serve_article_markdown(article):
 
@@ -186,12 +181,17 @@ def family_olympics():
     return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = total_medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete, leaderboard = combined_list)
 """
 
+@app.route('/boilerplates')
 @app.route('/boilerplate')
 def boilerplate():
-    readme_file = open("README.md", "r")
-    md_template_string = markdown.markdown(
-        readme_file.read(), extensions=["fenced_code"]
-    )
+    readme_file = open("articles/Boilerplate.md", "r")
+    content = markdown.markdown(readme_file.read(), extensions=["fenced_code"])
+
+    html = markdown.markdown(content)
+
+    # Render the HTML with a template
+    return render_template('article.html', content=html, title="Boilerplate")
+
 
     return md_template_string
 
@@ -199,7 +199,7 @@ def boilerplate():
 def get_color():
     # For the lamp
     # Returns the encrypted color code from color.txt
-    # Is one letter so bots can't crawl for it but also makes the request smaller
+    # Is one letter so bots don't crawl (can't find it) for it but also makes the request smaller
 
     with open("color.txt", 'r') as f:
         color = f.read()
@@ -258,8 +258,6 @@ def lamp_color_picker_api():
     # The route for the color picker to send the color to
     color = request.form.get('color')
     password = request.form.get('password')
-
-    print(session)
 
     password = hashlib.sha256(password.encode()).hexdigest()
 
