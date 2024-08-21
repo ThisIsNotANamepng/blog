@@ -6,10 +6,10 @@ I am interested in cyber threat analysis, I want to combine what I learn in poli
 
 Ultimately in my career I want to go into intelligence, specifically cyber threat analysis.
 
-I'm the president of UWEC's Model UN Club, the treasurer for UWEC's Student Association for COmputing Machinery, and a member of UWEC's DECA.
+I'm the president of UWEC's Model UN Club, the treasurer for UWEC's Student Association for Computing Machinery, and a member of UWEC's DECA.
 
 I'm in tech, so I'm obliged to have the stereotypical hobbies of going outside, hiking, kayaking, and reading. I like to paint, I play the trumpet, guitar, and ukulele.
 
-I also train in martial arts, namely Aikido, Karate, and Arnis.
+I also train in martial arts, namely Aikido, Karate, Arnis, and Escrima.
 
 You can find me on [LinkedIn](https://linkedin.com/in/jack-hagen-76580b293) and [Github](https://github.com/ThisIsNotANamepng). I don't use any other social media. To contact me you can use [security.z1jp1@passinbox.com](mailto:security.z1jp1@passinbox.com)
