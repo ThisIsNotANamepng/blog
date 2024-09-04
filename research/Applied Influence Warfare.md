@@ -33,12 +33,12 @@ Censorship is another well documented class of Influence Warfare, as its use has
 
 ## Health Operations
 
-The last class outlined in this document is more theoretical, and arguably has no confirmed examples. 
+The last class outlined in this document is more theoretical, and arguably has no confirmed examples.
 
-It is defined as efforts which are designed to reach no goal other than demoralize and/or harm the mental health of a group. 
+It is defined as efforts which are designed to reach no goal other than demoralize and/or harm the mental health of a target.
 
 Social media by itself is already [known to be dangerous to users' mental health](https://www.hhs.gov/sites/default/files/sg-youth-mental-health-social-media-advisory.pdf). The algorithms which determine a user's feed exploit human psychology to get the user to stay on the platform for as long as possible, often [promoting content which incites conflict](https://www.cell.com/trends/cognitive-sciences/abstract/S1364-6613(23)00166-3).
 
-It is established that social media as it is now already contributes to a mental health crises among teens (which I posit is on a scale unseen before in human history), and that is before any party purposefully manipulates it to become more harmful. 
+It is established that social media as it is now already contributes to a mental health crises among teens (which I posit is on a scale unseen before in human history), and that is before any party purposefully manipulates it to become more harmful.
 
 What if an organization manipulates media to specifically amplify an existing mental crisis and demoralize a population?

@@ -13,13 +13,13 @@ Building on the exploration of media and perception in Don DeLillo’s White Noi
 
 This paper introduces Influence Warfare as new field in cyberwarfare.
 
-Influence Warfare (IW) is the discipline of manipulating the media exposed to a target. Note that the target could be an individual, such as a high ranking elected official, or a group, such as the voters in a political district. 
+Influence Warfare (IW) is the discipline of manipulating the media exposed to a target. Note that the target could be an individual, such as a high ranking elected official, or a group, such as the voters in a political district.
 
-While traditional Information Security is about access to immutable, secured data, Influence Warfare is about the authenticity of (often, but not necessarily) public data. 
+While traditional Information Security is about access to immutable, secured data, Influence Warfare is about the authenticity of (often, but not necessarily public) data.
 
-Influence campaigns are a well known and researched tactic in cyberwarfare. There are many examples of consequential influence campaigns, such as Russian influence on social media during the 2020 election. Influence campaigns are campaigns intended to change the opinion of a target through exposure to certain media, often with disinformation. They also usually target platforms which allow users to create their own content legally, such as social media. IW is not limited by that requirement, it does not distinguish a disinformation social media post from a hacked TV showing a false news channel. 
+Influence campaigns are a well known and researched tactic in cyberwarfare. There are many examples of consequential influence campaigns, such as Russian influence on social media during the 2020 election. Influence campaigns are campaigns intended to change the opinion of a target through exposure to certain media, often with disinformation. They also usually target platforms which allow users to create their own content legally, such as social media. IW is not limited by that requirement, it does not distinguish a disinformation social media post from a hacked TV showing a false news channel.
 
-There are many different strategies and tactics which don't fall into the influence operations category but still require a specific label. For example, 
+There are many different strategies and tactics which don't fall into the influence operations category but still require a specific label. For example,
 
 - Censorship: The act of withholding or censoring certain information from a target. Currently this class doesn't fit into influence operations.
 - Secured Data Manipulation: The act of changing private data in order to elicit a certain response from a target (IE changing bank statements).
