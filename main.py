@@ -368,6 +368,13 @@ def lamp_color_picker_api():
 
     return redirect("/lamp_color_picker")
 
+# Utilities -----------------
+
+@app.errorhandler(404)
+def page_not_found(error):
+    # Render the custom 404 error page
+    return render_template('404.html'), 404
+
 @app.route('/robots.txt')
 def robots():
     return send_file('static/robots.txt')
