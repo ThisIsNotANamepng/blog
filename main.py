@@ -7,10 +7,41 @@ import os
 import csv 
 import hashlib
 import nh3
+from datetime import datetime
+import sqlite3
 
 app = Flask(__name__)
 
 app.secret_key = b'm#HS3Z65D&TFIyg(&^**d76^*fd66d!TjT6Kzr'
+
+# Helper Functions ---------------
+
+def get_db():
+    """Open a new database connection."""
+    conn = sqlite3.connect('badusb_database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    """Initialize the database."""
+    with get_db() as db:
+        db.execute('''
+        CREATE TABLE IF NOT EXISTS data_entries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            description_title TEXT NOT NULL,
+            data_type TEXT NOT NULL,
+            data_string TEXT NOT NULL,
+            timestamp TEXT NOT NULL
+        )
+        ''')
+        db.commit()
+
+def sanitize_input(input_string):
+    """Sanitize the input data using nh3."""
+    return nh3.clean(input_string)
+
+
+# Article Generation ----------------
 
 global tagss
 global researchh
@@ -39,6 +70,8 @@ for filename in os.listdir('articles'):
     if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
         articless.add(filename[:-3])
+
+# Visitor Pages ----------------
 
 @app.route('/')
 def index():
@@ -111,6 +144,20 @@ def serve_specific_research(research):
     # Render the HTML with a template
     return render_template('article.html', content=html, title=title)
 
+@app.route('/boilerplates')
+@app.route('/boilerplate')
+def boilerplate():
+    readme_file = open("articles/Boilerplate.md", "r")
+    content = markdown.markdown(readme_file.read(), extensions=["fenced_code"])
+
+    html = markdown.markdown(content)
+
+    # Render the HTML with a template
+    return render_template('article.html', content=html, title="Boilerplate")
+
+
+    return md_template_string
+
 """
 # I don't know what this is
 @app.route('/tag/<research>')
@@ -118,6 +165,7 @@ def serve_tags():
     articles = tags.get_articles_with_tag(tag)
     return render_template('tag.html', tag=tag, articles=articles)
 """
+# Family Olympics ----------------
 
 """
 @app.route('/olympics')
@@ -181,25 +229,70 @@ def family_olympics():
     return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = total_medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete, leaderboard = combined_list)
 """
 
-@app.route('/boilerplates')
-@app.route('/boilerplate')
-def boilerplate():
-    readme_file = open("articles/Boilerplate.md", "r")
-    content = markdown.markdown(readme_file.read(), extensions=["fenced_code"])
 
-    html = markdown.markdown(content)
+# BadUSB Endpoint ----------------
 
-    # Render the HTML with a template
-    return render_template('article.html', content=html, title="Boilerplate")
+@app.route('/badusb_sendinfo_bou_bao_ber_bwe_bgh_hop_pop_cop_qop_asl_alqpc_meht_bqaf', methods=['POST'])
+def register_badusb_info():
 
+    try:
+        # Extracting JSON data from the request
+        data = request.get_json()
 
-    return md_template_string
+        # Check if the required fields are in the request
+        if not all(k in data for k in ('description_title', 'data_type', 'data_string')):
+            return jsonify({'error': 'Missing required fields. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 400
+
+        # Sanitize input data
+        description_title = sanitize_input(data['description_title'])
+        data_type = sanitize_input(data['data_type'])
+        data_string = sanitize_input(data['data_string'])
+
+        # Get the current timestamp
+        timestamp = datetime.now()
+
+        # Insert the data into the SQLite database
+        with get_db() as db:
+            db.execute('''
+            INSERT INTO data_entries (description_title, data_type, data_string, timestamp)
+            VALUES (?, ?, ?, ?)
+            ''', (description_title, data_type, data_string, timestamp))
+            db.commit()
+
+        return jsonify({'message': 'Data received and saved successfully. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e) + '. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 500
+    
+    # Download helper scripts from github if necessary
+
+@app.route('/badusb_view_info_goduqwgdowudvqpuqobnmzqoihsieyfvywiveafisdyhvjbweofjbewuvw354678iyesvbwyae', methods=['GET'])
+def view_data():
+    """Render an HTML page with a table of all data from the database, sorted by timestamp. Uses the saved session password from the color picker as authentication because I'm lazy"""
+
+    if 'password' in session:
+        if session.get('password') != "3cd71abb4a6b6be8422ab9cfbb3c28e906cf8f71f73e78a023b08d1a386e16e7":
+            print(session.get('password'))
+            return render_template('404.html')
+    else:
+        print("not in session")
+        return render_template('404.html')
+        
+    with get_db() as db:
+        data_entries = db.execute('''
+        SELECT description_title, data_type, data_string, timestamp
+        FROM data_entries
+        ORDER BY timestamp DESC
+        ''').fetchall()
+
+    return render_template('view_badusb_data.html', data_entries=data_entries)
+
+# Lamp Stuff ----------------
 
 @app.route('/lampgetqthhbhbuhohoahlxakkhcv', methods=['GET'])
 def get_color():
     # For the lamp
     # Returns the encrypted color code from color.txt
-    # Is one letter so bots don't crawl (can't find it) for it but also makes the request smaller
 
     with open("color.txt", 'r') as f:
         color = f.read()

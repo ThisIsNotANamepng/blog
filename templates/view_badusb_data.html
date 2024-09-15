@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BadUSB Data Captures</title>
+    <link rel="stylesheet" href="/static/css/pico.grey.min.css">
+    <style>
+
+    </style>
+</head>
+<body class="container">
+    <header class="header container"><h1>BadUSB Data Captures</h1></header>
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Script</th>
+                <th>Data Type</th>
+                <th>Data String</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data_entries %}
+            <tr>
+                <td>{{ entry.description_title }}</td>
+                <td>{{ entry.data_type }}</td>
+                <td>{{ entry.data_string }}</td>
+                <td>{{ entry.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
