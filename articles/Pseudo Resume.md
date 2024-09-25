@@ -22,6 +22,8 @@ I don't like Resumes. They're annoying and formal and don't have enough room for
 
 - I'm the treasurer of uwec's Student Association for Computing Machinery, which means that in addition to managing the club's money I'm part of the team that presents and teaches our members a computing concept every meeting. I usually run the security and Linux nights
 
+- In 2024 I went to the [Midwestern Undergraduate Data Analytics Competition](https://www.mudac.org/) where as part of a team from uwec, we stayed up for 26 hours straight analyzing various datasets from a real life client in order to answer questions about crop optimization and then presented to judges
+
 - I'm the founder and president of uwec's Model United Nations club
 
 - I've trained in various martial arts since I was 9, namely Wadokai Aikido and Shorin Ryu Karate. At school I'm in the Mixed Martial Arts club
