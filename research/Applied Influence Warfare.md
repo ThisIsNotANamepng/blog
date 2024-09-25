@@ -1,7 +1,7 @@
 Influence Warfare
 # Applied Influence Warfare
 
-This is an academic style paper designed to further explain a field of security I came up myself. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, it might change as I do more research and change my mind. 
+This is an academic style paper designed to further explain a field of security. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, it might change as I do more research and change my mind.
 
 In my [introductory article to Influence Warfare](/research/Introduction To Influence Warfare) I introduced my definition of Influence Warfare, I suggest you read it first in order to understand this article.
 

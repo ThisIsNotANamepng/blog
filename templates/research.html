@@ -12,7 +12,30 @@
 
 </head>
 <body class="container">
-    <h1>Homepage for Research</h1>
+
+    <header class="header container">
+        <a href="/"><h1>Homepage</h1></a>
+    </header>
+
+    <p>I go to college at <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>, which is a <a href="https://www.uwec.edu/academics/academic-experience/research">national leader for undergraduate research</a> so I've had many opportunities to do research, and is one of the ways that I best prepare for a career in cyber.</p>
+
+    <p>This page is meant to give an easy, high-level overview of all of the official research projects I've worked on. There are links to dedicated pages for most of these projects below.</p>
+
+    <p>At the time of this writing (September of 2025) I've worked on five research projects with three different professors.</p>
+
+    <h2>Projects</h2>
+
+    <ul>
+        <li><b><a href="/research/Bertini">2023-2024 school year:</b></a> I worked with a mathematics professor to rewrite her <a href="https://github.com/bertiniteam/b2">very fancy tool</a> for solving arbitrary polynomial systems. My job was to collaborate with to make the install process easier for casual researchers (before out work you essentially had to have an in-depth knowledge of computer systems to install). We aimed for porting the tool to Conda, which required switching the build system from the older Autotools to the newer CMake. In the end, we didn't make it to Conda, but you can install by cloning the repo and using 'pip install'. <a href="https://github.com/bertiniteam/b2/commit/245ed7080ad524a1ee889547878edf7cc8f59628">Here's the commit</a> from my development repo to the main one.</li>
+
+        <li><a href="/research/AIMS"><b>September 2023-present:</b></a> I worked as part of a team which aimed to identify datasets with signatures from benign/malicious network traffic and apply new Machine Learning algorithms that the original authors overlooked.</li>
+
+        <li><a href="/research/AIMS"><b>Summer of 2024:</b></a> I worked to create tools which could show cybersecurity concepts to a class in a hands-on approach. I created enhanced letter frequencies for cryptography and a basic system attestation tool utilizing a fleet of Linux containers.</li>
+
+        <li><a href="/research/AIMS"><b>September 2024 - present:</b></a> I am using various generative AI models to create a dataset of AI-written phishing emails which can defeat current phishing detection techniques in order to provide data for improving those systems.</li>
+
+        <li><b>September 2024 - present:</b> Inspired by a police training that I helped run, I am creating a tracking grid of edge devices which use bluetooth triangulation if a target's personal devices to track them as they move through campus to illustrate the dangers of the devices we carry everyday, and to investigate potential mitigation techniques.</li>
+    </ul>
 
 </body>
 </html>

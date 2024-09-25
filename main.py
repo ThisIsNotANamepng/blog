@@ -100,6 +100,7 @@ def tag(tag):
     return render_template('tag.html', tag=tag, articles=articles, research=research)
 
 @app.route('/research')
+@app.route('/research/')
 def serve_research():
     return render_template('research.html')
 
