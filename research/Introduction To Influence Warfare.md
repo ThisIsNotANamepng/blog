@@ -15,7 +15,7 @@ This paper introduces Influence Warfare as new field in cyberwarfare.
 
 Influence Warfare (IW) is the discipline of manipulating the media exposed to a target. Note that the target could be an individual, such as a high ranking elected official, or a group, such as the voters in a political district.
 
-While traditional Information Security is about access to immutable, secured data, Influence Warfare is about the authenticity of (often, but not necessarily public) data.
+While traditional Information Security is about access to immutable, secured data, Influence Warfare is about the authenticity of (often, but not necessarily) public data.
 
 Influence campaigns are a well known and researched tactic in cyberwarfare. There are many examples of consequential influence campaigns, such as Russian influence on social media during the 2020 election. Influence campaigns are campaigns intended to change the opinion of a target through exposure to certain media, often with disinformation. They also usually target platforms which allow users to create their own content legally, such as social media. IW is not limited by that requirement, it does not distinguish a disinformation social media post from a hacked TV showing a false news channel.
 
@@ -31,7 +31,7 @@ The definition also doesn't distinguish between false and true information, whil
 
 "Influence Campaigns" Is the typical label for any operation which aims to sway public opinion by injecting the public psyche with differing information. The term "campaign" lends a sense that such actions occur on a limited timeframe, in order to enact a specific change. This paper proposes using the term "Influence Warfare" for in order to classifying actions which are similar but cannot fit into that narrow definition.
 
-### A New Computing Age
+### An Interconnected Age
 
 Influence campaigns largely came about with the rise of the internet and the newfound connectedness which bombarded a large part of humanity with information, "facts", and opinions which has never happened on such a large scale before. When the World Wide Wed was first envisioned, it may have been thought of as a tool, something that a human could reach out to and use for a specific purpose, but that definition has widely changed as the internat and technology continues to integrate with our society.
 

@@ -8,13 +8,15 @@ Ultimately in my career I want to go into intelligence, specifically cyber threa
 
 But just because I like the theoretical side of cybersecurity doesn't mean I'm a stranger to the technical side. I'm familiar with popular cyber tools and use them in [my research](research/AIMS), I took cyber and networking courses at [Waukesha County Technical College](https://www.wctc.edu/) during senior year of high school, and the team I was a part of won sixth out of seventy one teams at the 2024 [Cyphercon](https://cyphercon.com/) CTF.
 
-I'm the president of UWEC's Model UN Club, the treasurer for UWEC's Student Association for Computing Machinery, and a member of UWEC's DECA.
+I'm the president and founder of UWEC's [cybersecurity club](https://github.com/Blugold-Group), the president and founder of UWEC's Model United Nations Club, and the president of UWEC's Student Association for Computing Machinery (student chapter of the ACM).
 
 I'm in tech, so I'm obliged to have the stereotypical hobbies of going outside, hiking, kayaking, and reading. I like to paint, I play the trumpet, guitar, and ukulele.
 
-I also train in martial arts, namely Aikido, Karate, and Arnis.
+I also train in martial arts, namely Aikido, Shorin-ryu Karate, and Tai Chi.
 
 You can find me on [LinkedIn](https://linkedin.com/in/jack-hagen-76580b293) and [Github](https://github.com/ThisIsNotANamepng). I don't use any other social media. To contact me you can use [security.z1jp1@passinbox.com](mailto:security.z1jp1@passinbox.com)
+
+## Projects
 
 ## Certifications
 

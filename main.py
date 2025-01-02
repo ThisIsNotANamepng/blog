@@ -150,6 +150,10 @@ def now():
     # Page with current updates
     return render_template('now.html')
 
+@app.route('/resume')
+def resume():
+    pdf_path = 'static/Resume.pdf'
+    return send_file(pdf_path, as_attachment=False)
 
 @app.route('/boilerplates')
 @app.route('/boilerplate')
