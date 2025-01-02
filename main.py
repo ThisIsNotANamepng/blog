@@ -145,6 +145,12 @@ def serve_specific_research(research):
     # Render the HTML with a template
     return render_template('article.html', content=html, title=title)
 
+@app.route('/now')
+def now():
+    # Page with current updates
+    return render_template('now.html')
+
+
 @app.route('/boilerplates')
 @app.route('/boilerplate')
 def boilerplate():
