@@ -81,7 +81,7 @@ This video also belongs to [UW Eau Claire](https://uwec.edu).
 
 ### Times Square Livestream
 
-The lack of students in the footbridge livestream made me sad, but then I wondered if there was another livestream which did have people (in a non identifying way, of course). Luckily, New York exists. There are a number of livestreams of downtown New York perpetually filled with tourists randomly meandering the streets. I could not think of a better way to capture true randomness than by analyzing the confusion of tourists. Again, I obviously did not record this video, all credit goes to [EarthCam](https://www.earthcam.com) I got the video from [https://www.earthcam.com/usa/newyork/timessquare/?cam=tsrobo1](https://www.earthcam.com/usa/newyork/timessquare/?cam=tsrobo1).
+The lack of students in the footbridge livestream made me sad, but then I wondered if there was another livestream which did have people (in a non identifying way, of course). Luckily, New York exists. There are a number of livestreams of downtown New York perpetually filled with tourists randomly meandering the streets. I could not think of a better way to capture true randomness than by analyzing the confusion of tourists. Again, I obviously did not record this video, all credit goes to [EarthCam](https://www.earthcam.com), I got the video from [https://www.earthcam.com/usa/newyork/timessquare/?cam=tsrobo1](https://www.earthcam.com/usa/newyork/timessquare/?cam=tsrobo1).
 
     entropy: 7.986465972907881
 

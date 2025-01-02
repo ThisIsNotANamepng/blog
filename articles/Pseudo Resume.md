@@ -18,15 +18,17 @@ I don't like Resumes. They're annoying and formal and don't have enough room for
 
 - During my senior year of high school I did the "Start College Now" program, which means that my high school paid for me to go to my local technical college (which happens to have one of the best cyber programs in the state) and take classes in addition to my high school coursework. I learned invaluable skills there that I (if I learned at all) wouldn't have learned traditionally until my junior or senior year (Cisco Networking, Linux, Bash, Enterprise Clients, Security 1)
 
+- I am the founder and president of uwec's cybersecurity club, I built numerous projects and plans for creating a competitive cybersecurity team, including teaching a new topic in cybersecurity and leading hands on activities each week, physically programming and working on a lot of [projects](https://github.com/Blugold-Group), and generally being a driven person in creating an engaging, education, and accepting environment out of nothing (pretty much by myself). It should be noted that nothing that I teach or use in the club I learned in my normal CS program, I learned all of it on my own in my free time
+
 - I worked and still work on multiple official uwec research projects, found [here](/research)
 
-- I'm the treasurer of uwec's Student Association for Computing Machinery, which means that in addition to managing the club's money I'm part of the team that presents and teaches our members a computing concept every meeting. I usually run the security and Linux nights
+- I'm the president of uwec's Student Association for Computing Machinery
 
 - In 2024 I went to the [Midwestern Undergraduate Data Analytics Competition](https://www.mudac.org/) where as part of a team from uwec, we stayed up for 26 hours straight analyzing various datasets from a real life client in order to answer questions about crop optimization and then presented to judges
 
 - I'm the founder and president of uwec's Model United Nations club
 
-- I've trained in various martial arts since I was 9, namely Wadokai Aikido and Shorin Ryu Karate. At school I'm in the Mixed Martial Arts club
+- I've trained in various martial arts since I was 9, namely Wadokai Aikido and Shorin Ryu Karate
 
 - Junior and senior year of high school I was a "tech intern", a group which operated a helpdesk for staff and students. During the summer for those years I also worked as an intern with the IT department, we upgraded systems, managed the hundreds of Chromebooks and IPads that the school district owned, and checked the AV technology in every classroom of the 10 school district. During my senior year I also competed in the Future Business Leader's of America coding and programming competition, winning first at state and going to nationals in Atlanta
 
