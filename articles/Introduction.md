@@ -4,8 +4,6 @@ My name is Jack Hagen, I'm currently a computer science and political science st
 
 I am interested in cyber threat analysis, I want to combine what I learn in political science and global studies with my skills in cybersecurity and data science to study the effect of cyber operations between nation states and the combination of cyber operations with traditional intelligence operations. This includes novel indirect warfare such as targeted misinformation and information warfare. One of my specialties/primary areas of study is a form of warfare called [Influence Warfare](/research/InfluenceWarfare).
 
-Ultimately in my career I want to go into intelligence, specifically cyber threat analysis.
-
 But just because I like the theoretical side of cybersecurity doesn't mean I'm a stranger to the technical side. I'm familiar with popular cyber tools and use them in [my research](research/AIMS), I took cyber and networking courses at [Waukesha County Technical College](https://www.wctc.edu/) during senior year of high school, and the team I was a part of won sixth out of seventy one teams at the 2024 [Cyphercon](https://cyphercon.com/) CTF.
 
 I'm the president and founder of UWEC's [cybersecurity club](https://github.com/Blugold-Group), the president and founder of UWEC's Model United Nations Club, and the president of UWEC's Student Association for Computing Machinery (student chapter of the ACM).
