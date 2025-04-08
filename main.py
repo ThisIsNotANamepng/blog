@@ -395,6 +395,13 @@ def robots():
 def security_warn():
     return send_file('static/security.txt')
 
+@app.route('/senate')
+def senate_babay():
+
+
+    return render_template('senate.html')
+
+
 if __name__ == '__main__':
     #app.run(host="0.0.0.0", debug=True)
     app.run(host="127.0.0.1", debug=True)
