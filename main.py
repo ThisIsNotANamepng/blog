@@ -395,9 +395,10 @@ def robots():
 def security_warn():
     return send_file('static/security.txt')
 
-@app.route('/senate')
-def senate_babay():
 
+
+@app.route('/senate')
+def senate_baby():
 
     return render_template('senate.html')
 
