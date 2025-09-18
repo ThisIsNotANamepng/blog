@@ -14,3 +14,5 @@ The conference itself was also an amazing opportunity, I watched talks from AI s
 After the conference, we were given a chance to work together and write a paper out of the results form the event, I'll update this once that gets published.
 
 ![Us Red Teaming Models together](/static/redteamingcamlis.jpg)
+
+Here's our finished report from our findings [https://humane-intelligence.org/wp-content/uploads/2025/09/camlis-report.pdf](https://humane-intelligence.org/wp-content/uploads/2025/09/camlis-report.pdf)
