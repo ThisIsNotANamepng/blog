@@ -1,0 +1,44 @@
+main {
+  max-width: 80%;
+}
+
+.hero-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hero-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hero-image img {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+
+.caption {
+  font-size: 0.85rem;
+  color: var(--footer);
+  text-align: center;
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+.stat_number {
+  color: var(--stat_number);
+}
+
+.commit {
+    float:right;
+    font-size: 0.85em;
+}

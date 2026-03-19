@@ -2,19 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://latex.vercel.app https://keepandroidopen.org; script-src 'self' https://cloud.umami.is https://keepandroidopen.org; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src https://latex.vercel.app 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jack Hagen</title>
-    <link rel="stylesheet" href="/static/css/pico.grey.min.css">
-    <link rel="stylesheet" href="/static/homepagestylee.css">
+    <!--<link rel="stylesheet" href="/static/css/pico.grey.min.css">-->
+    <!--<link rel="stylesheet" href="/static/homepagestylee.css">-->
+    <link rel="stylesheet" href="/static/css/colors.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/homepage.css">
+
+    <!--<link rel="stylesheet" href="https://latex.vercel.app/style.css">-->
+
     <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
 </head>
 <body>
-    
-    <header class="header container">
+    <script src="https://keepandroidopen.org/banner.js"></script>
+    <main>
+    <!--    
+    <header class="header">
         <a href="/"><h1>Jack Hagen</h1></a>
-    </header>
-    <main class="container">
+    </header>-->
+
+        <div class="hero-wrapper">
+            <div class="hero-text">
+                <h1>Jack Hagen</h1>
+                <h3>Total articles: <span class="stat_number">{{ total_articles }}</span></h3>
+                <h3>Total words in articles: <span class="stat_number">{{ total_words }}</span></h3>
+                <h3>RAM/CPU/GPUS used by me on <a href="https://hpc.uwec.edu/">BOSE</a>: </h3>
+                <h3>Total GHz days donated to <a href="https://www.mersenne.org/">GIMPS</a>: <span class="stat_number">{{ ghz_days }}</span></h3>
+                <h3>Total URLS indexed by Stultus: </h3>
+            </div>
+
+            <div class="hero-image">
+                <img src="/static/images/homepage/{{ loaded_image_filepath }}" alt="{{ loaded_image_caption }}">
+                <p class="caption">{{ loaded_image_caption }}. <a href="/pictures">My pictures.</a></p>
+            </div>
+        </div>
+    
         <section id="about">
             <h2>About Me</h2>
             <p>I'm Jack Hagen. I'm a student, double majoring in Computer Science and Political Science at the <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>. I do research with my university's Artificial Intelligence and Machine Learning Security research group as well as in my own time. <a href="/articles/Introduction">About me.</a></p>
@@ -23,11 +47,10 @@
             <p>If you want a starting point to understand my work you should start with one of these articles</p>
             <ul>
                 <li><a href="/articles/Introduction">An introduction to myself</a></li>
-                <li><a href="/research/Introduction To Influence Warfare">My introduction to Influence Warfare</a></li>
-                <li><a href="/research/AIMS">My record of what I worked on as part of UWEC's Artificial Intelligence Machine learning Security research group</a></li>
+                <li><a href="/articles/Introduction To Influence Warfare">My introduction to Influence Warfare</a></li>
+                <li><a href="/articles/AIMS">My record of what I worked on as part of UWEC's Artificial Intelligence Machine learning Security research group</a></li>
                 <li><a href="/resume">My professional resume</a></li>
                 <li><a href="/articles/Pseudo Resume">My uncategorized, nuanced, stream of consciousness resume</a></li>
-
             </ul>  
               
         </section>
@@ -49,14 +72,6 @@
             </ul>
         </section>
 
-        <section id="research">
-            <h2>My Research</h2>
-            <ul>
-                {% for researc in research %}
-                    <li><a href="/research/{{ researc }}">{{ researc }}</a></li>
-                {% endfor %}
-            </ul>
-        </section>
         <section id="connect">
             <h2>Connect</h2>
             <ul>
@@ -64,6 +79,8 @@
                 <li><a href="https://linkedin.com/in/jack-hagen-76580b293">LinkedIn</a></li>
                 <!--<li><a href="mailto:security.z1jp1@passinbox.com">Email</a></li>-->
                 <li><a href="mailto:hagenjj4111@uwec.edu">Email</a></li>
+                <li><a href="https://scholar.google.com/citations?user=hREzQyIAAAAJ&hl=en">Google Scholar</a></li>
+                <li><a href="/gpg">GPG Key</a></li>
 
             </ul>
         </section>
@@ -73,6 +90,7 @@
                 <li><a href="/articles/Boilerplate">Boilerplate</a></li>
             </ul>
         </section>
+    <div class="commit"><a href="https://github.com/thisIsNotANamepng/blog">{{ current_commit }}</a></div>
 
     </main>
 </body>

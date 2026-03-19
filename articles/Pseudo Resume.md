@@ -2,7 +2,7 @@
 
 I don't like resumes. They're annoying and formal and don't have enough room for me to put all of the things and nuances that I think employers should know. So I wrote this document to hold all of the things I think should go onto my resume without the fuss of formatting and formal writing. There isn't a strict format, but I'll generally start with the more important stuff on top.
 
-- I'm a Undergraduate student majoring in **Computer Science and Political Science with a certificate in Chinese** at [University of Wisconsin - Eau Claire (UWEC)](https://uwec.edu)
+- I'm a Undergraduate student majoring in **Computer Science and Political Science with certificates in Chinese and Transnational Asian Studies** at [University of Wisconsin - Eau Claire (UWEC)](https://uwec.edu)
 
 - I'm in the [UWEC honors college](https://www.uwec.edu/academics/mark-stephen-cosby-honors-college)
 
@@ -11,6 +11,8 @@ I don't like resumes. They're annoying and formal and don't have enough room for
 - I have various certificates in cybersecurity and general IT, a comprehensive list [here](https://www.credly.com/users/jack-hagen.fc2778b2)
 
 - In April of 2024 I was hired to be a student system administrator of UWEC's **[High Performance Computing Center](https://hpc.uwec.edu)** which means I'm part of the small team which manages our two **supercomputing clusters** (about 85 machines altogether). We present to/help/teach the few hundred students and faculty researchers which use the clusters, make sure all of the many moving parts of the clusters work, and generally ensure that everything is up to date, secure, and available for all. I'm also the "security person" so I'm generally in charge of most security-related stuff
+
+- In Fall of 2025 I was accepted into a [hackathon at MIT](https://hackmit.org/) and won first place in a sponsor challenge. My team built a privacy-preserving, verifiable OAuth system built on EigenCloud. It leverages Trusted Execution Environments (TEEs) to validate emails and other dynamic identity attributes, ensuring that anonymity could be preserved, even from the admins of the service [https://github.com/ThisIsNotANamepng/diagonalize](https://github.com/ThisIsNotANamepng/diagonalize)
 
 - In Fall of 2024 I founded and became the **president** of the UWEC **Model United Nations** club
 

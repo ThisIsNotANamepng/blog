@@ -3,12 +3,17 @@ import markdown
 from pathlib import Path
 import time
 import tags
-import os
 import csv 
 import hashlib
 import nh3
 from datetime import datetime
 import sqlite3
+import os, random
+import loaded_image_captions
+import re
+import requests
+from bs4 import BeautifulSoup
+import subprocess
 
 app = Flask(__name__)
 
@@ -16,70 +21,193 @@ app.secret_key = b'm#HS3Z65D&TFIyg(&^**d76^*fd66d!TjT6Kzr'
 
 # Helper Functions ---------------
 
-def get_db():
-    """Open a new database connection."""
-    conn = sqlite3.connect('badusb_database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def init_db():
-    """Initialize the database."""
-    with get_db() as db:
-        db.execute('''
-        CREATE TABLE IF NOT EXISTS data_entries (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            description_title TEXT NOT NULL,
-            data_type TEXT NOT NULL,
-            data_string TEXT NOT NULL,
-            timestamp TEXT NOT NULL
-        )
-        ''')
-        db.commit()
-
 def sanitize_input(input_string):
     """Sanitize the input data using nh3."""
     return nh3.clean(input_string)
+
+def count_words_in_file(filepath):
+    """Count words in a single file."""
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            text = f.read()
+            # Split on whitespace and filter out empty strings
+            words = re.findall(r'\b\w+\b', text.lower())
+            return len(words)
+    except Exception as e:
+        print(f"Error reading {filepath}: {e}")
+        return 0
+
+def count_words_in_directory(directory):
+    """Count words in all .md files in a directory."""
+    total_words = 0
+    file_count = 0
+
+    # Use Path for cleaner path handling
+    path = Path(directory)
+
+    # Find all .md files recursively
+    for md_file in path.rglob('*.md'):
+        words = count_words_in_file(md_file)
+        total_words += words
+        file_count += 1
+
+    return file_count, total_words
+        
+def find_user_ghz_days(username):
+    url = "https://www.mersenne.org/report_top_500/"
+
+    try:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Error fetching page: {e}")
+        return None
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Find the table body containing user data
+    tbody = soup.find('tbody')
+    if not tbody:
+        # Fallback: search all tables
+        tables = soup.find_all('table')
+        for table in tables:
+            result = search_table_for_user(table, username)
+            if result is not None:
+                return result
+        return None
+
+    return search_table_for_user(tbody, username)
+
+def search_table_for_user(container, username):
+    rows = container.find_all('tr')
+
+    for row in rows:
+        cells = row.find_all('td')
+        if len(cells) >= 3:
+            # Member name is in the 2nd column (index 1)
+            name_cell = cells[1]
+            user_name = name_cell.get_text(strip=True)
+
+            # Check for exact match or case-insensitive match
+            if user_name.lower() == username.lower():
+                # Total GHz Days is in the 3rd column (index 2)
+                ghz_days_text = cells[2].get_text(strip=True)
+                try:
+                    ghz_days = int(ghz_days_text.replace(',', ''))
+                    return ghz_days
+                except ValueError:
+                    return None
+
+    return None
+
+def get_current_commit_hash(short=True):
+
+    cmd = ["git", "rev-parse"]
+    if short:
+        cmd.append("--short")
+    cmd.append("HEAD")
+
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        check=True
+    )
+
+    return result.stdout.strip()
+
+def get_last_commit_date(filepath):
+    # Convert to relative path if absolute
+    if os.path.isabs(filepath):
+        try:
+            # Get the git repo root
+            repo_root = subprocess.check_output(
+                ['git', 'rev-parse', '--show-toplevel'],
+                stderr=subprocess.PIPE,
+                text=True
+            ).strip()
+            filepath = os.path.relpath(filepath, repo_root)
+        except subprocess.CalledProcessError:
+            return None
+
+    try:
+        # Get the commit date in ISO 8601 format
+        result = subprocess.check_output(
+            ['git', 'log', '-1', '--format=%ai', '--', filepath],
+            stderr=subprocess.PIPE,
+            text=True
+        ).strip()
+
+        if not result:
+            return None  # File not tracked by git
+
+        # Parse the ISO 8601 date string
+        # Format: 2023-10-15 14:30:25 +0200
+        return datetime.fromisoformat(result)
+
+    except subprocess.CalledProcessError:
+        return None  # Not a git repo or other error
+
+
+def get_last_commit_date_formatted(filepath, date_format="%Y-%m-%d"):
+    commit_date = get_last_commit_date(filepath)
+
+    print("===", filepath)
+
+    if commit_date is None:
+        return "File not tracked by git or not in a git repository"
+
+    return commit_date.strftime(date_format)
 
 
 # Article Generation ----------------
 
 global tagss
-global researchh
 global articless
+global total_articles
+global total_words
+global ghz_days
+global current_commit
+global edit_dates
 
 tagss = set()
-researchh = set()
 articless = set()
+edit_dates = []
 
 for filename in os.listdir('articles'):
     if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
         tagss.update(tags.parse_markdown_tags(filepath))
 
-for filename in os.listdir('research'):
-    if filename.endswith('.md'):
-        filepath = os.path.join('research', filename)
-        tagss.update(tags.parse_markdown_tags(filepath))
-
-for filename in os.listdir('research'):
-    if filename.endswith('.md'):
-        filepath = os.path.join('articles', filename)
-        researchh.add(filename[:-3])
-
 for filename in os.listdir('articles'):
     if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
+        print(filepath)
         articless.add(filename[:-3])
+        edit_dates.append(get_last_commit_date_formatted(filepath))
+
+print(edit_dates)
+data = count_words_in_directory("articles")
+total_articles = data[0]
+total_words = data[1]
+
+ghz_days = find_user_ghz_days("Jack Hagen")
+current_commit = get_current_commit_hash()
 
 # Visitor Pages ----------------
 
 @app.route('/')
 def index():
     global tagss
-    global researchh
     global articless
+    global total_articles
+    global total_words
+    global current_commit
 
-    return render_template('index.html', tags=tagss, articles=articless, research=researchh)
+    loaded_image = random.choice(os.listdir("static/images/homepage"))
+    loaded_image_caption = loaded_image_captions.get_caption(loaded_image)
+
+    return render_template('index.html', tags=tagss, articles=articless, loaded_image_filepath=loaded_image, loaded_image_caption=loaded_image_caption, total_articles=total_articles, total_words=total_words, ghz_days=ghz_days, current_commit=current_commit)
 
 @app.route('/tag/<tag>')
 def tag(tag):
@@ -95,14 +223,9 @@ def tag(tag):
         return "You can't do that"
 
     articles = tags.get_articles_with_tag(tag, 'articles')
-    research = tags.get_articles_with_tag(tag, 'research')
 
-    return render_template('tag.html', tag=tag, articles=articles, research=research)
+    return render_template('tag.html', tag=tag, articles=articles)
 
-@app.route('/research')
-@app.route('/research/')
-def serve_research():
-    return render_template('research.html')
 
 @app.route('/articles/<article>')
 def serve_article_markdown(article):
@@ -118,32 +241,18 @@ def serve_article_markdown(article):
         title = next((item for item in content if item.startswith('#')), None)[2:]
         content = ''.join(content)
 
+    total_words = len(content.split())
+
     # Convert Markdown to HTML
     html = markdown.markdown(content)
 
     # Render the HTML with a template
-    return render_template('article.html', content=html, title=title)
+    return render_template('article.html', content=html, title=title, total_words=total_words)
 
-
-@app.route('/research/<research>')
-def serve_specific_research(research):
-
-    if not Path("research/"+research+".md").exists():
-        return render_template('404.html')
-    
-    with open("research/"+research+'.md', 'r') as file:
-        content = file.readlines()
-
-        if "#" not in content[0]: content = content[1:]
-
-        title = next((item for item in content if item.startswith('#')), None)[2:]
-        content = ''.join(content)
-        
-    # Convert Markdown to HTML
-    html = markdown.markdown(content)
-
-    # Render the HTML with a template
-    return render_template('article.html', content=html, title=title)
+@app.route('/research')
+@app.route('/research/')
+def serve_research():
+    return render_template('research.html')
 
 @app.route('/now')
 def now():
@@ -154,6 +263,11 @@ def now():
 def resume():
     pdf_path = 'static/Resume.pdf'
     return send_file(pdf_path, as_attachment=False)
+
+@app.route('/gpg')
+def gpg_path():
+    return send_file("static/misc/jack_hagen_public.gpg", as_attachment=False)
+
 
 @app.route('/boilerplates')
 @app.route('/boilerplate')
@@ -169,215 +283,6 @@ def boilerplate():
 
     return md_template_string
 
-"""
-# I don't know what this is
-@app.route('/tag/<research>')
-def serve_tags():
-    articles = tags.get_articles_with_tag(tag)
-    return render_template('tag.html', tag=tag, articles=articles)
-"""
-# Family Olympics ----------------
-
-"""
-@app.route('/olympics')
-def family_olympics():
-# Handles the family olympics data
-
-    with open("last_saved.txt", 'r') as timesaved:
-        timed = timesaved.read()
-
-        timed = timed[0:timed.index(".")]
-
-        if (int(timed)+61)<time.time():
-            olympics.scrape_olympic_data()
-
-    countries = []
-    names = []
-    gold_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    silver_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    bronze_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    total_medals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    populations = [52081799, 52428290, 123890000, 5338900, 203080756, 68449000, 41012563, 27282542, 5562363, 2825544, 5089478]
-    athletes = [141, 72, 393, 195, 276, 573, 315, 460, 107, 58, 134]
-
-    with open('scraped.csv', mode='r') as file:
-        index = 1
-        reader = csv.reader(file)
-        for row in reader:
-            if index == 1:
-                countries = row
-            elif index == 2:
-                names = row
-            elif index == 3:
-                gold_medals = row
-            elif index == 4:
-                silver_medals = row
-            elif index == 5:
-                bronze_medals = row
-            elif index == 6:
-                medals = row
-            index+=1
-
-    gold_medals = olympics.convert_to_integers(gold_medals)
-    silver_medals = olympics.convert_to_integers(silver_medals)
-    bronze_medals = olympics.convert_to_integers(bronze_medals)
-    medals = olympics.convert_to_integers(medals)
-    total_medals=medals
-
-    medals_per_capita = olympics.medals_per_capita(medals, populations)
-    medals_per_athlete = olympics.medals_per_capita(medals, athletes)
-
-    combined_list = []
-    for name, country, medals in zip(names, countries, medals_per_athlete):
-        combined_list.append({
-            'name': name,
-            'country': country,
-            'medals_per_athlete': medals
-        })
-
-    combined_list = sorted(combined_list, key=lambda x: x['medals_per_athlete'], reverse=True)
-
-    return render_template('olympics.html', gold_medals = gold_medals, silver_medals = silver_medals, bronze_medals = bronze_medals, medals = total_medals, countries = countries, medals_per_capita = medals_per_capita, medals_per_athlete = medals_per_athlete, leaderboard = combined_list)
-"""
-
-
-# BadUSB Endpoint ----------------
-
-@app.route('/badusb_sendinfo_bou_bao_ber_bwe_bgh_hop_pop_cop_qop_asl_alqpc_meht_bqaf', methods=['POST'])
-def register_badusb_info():
-
-    try:
-        # Extracting JSON data from the request
-        data = request.get_json()
-
-        # Check if the required fields are in the request
-        if not all(k in data for k in ('description_title', 'data_type', 'data_string')):
-            return jsonify({'error': 'Missing required fields. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 400
-
-        # Sanitize input data
-        description_title = sanitize_input(data['description_title'])
-        data_type = sanitize_input(data['data_type'])
-        data_string = sanitize_input(data['data_string'])
-
-        # Get the current timestamp
-        timestamp = datetime.now()
-
-        # Insert the data into the SQLite database
-        with get_db() as db:
-            db.execute('''
-            INSERT INTO data_entries (description_title, data_type, data_string, timestamp)
-            VALUES (?, ?, ?, ?)
-            ''', (description_title, data_type, data_string, timestamp))
-            db.commit()
-
-        return jsonify({'message': 'Data received and saved successfully. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 200
-
-    except Exception as e:
-        return jsonify({'error': str(e) + '. Nothing submitted here is private, do not submit information or post to this server if you are not the original author. Nothing submitted to this url will be saved, kept private or secure.'}), 500
-    
-    # Download helper scripts from github if necessary
-
-@app.route('/badusb_view_info_goduqwgdowudvqpuqobnmzqoihsieyfvywiveafisdyhvjbweofjbewuvw354678iyesvbwyae', methods=['GET'])
-def view_data():
-    """Render an HTML page with a table of all data from the database, sorted by timestamp. Uses the saved session password from the color picker as authentication because I'm lazy"""
-
-    if 'password' in session:
-        if session.get('password') != "3cd71abb4a6b6be8422ab9cfbb3c28e906cf8f71f73e78a023b08d1a386e16e7":
-            print(session.get('password'))
-            return render_template('404.html')
-    else:
-        print("not in session")
-        return render_template('404.html')
-        
-    with get_db() as db:
-        data_entries = db.execute('''
-        SELECT description_title, data_type, data_string, timestamp
-        FROM data_entries
-        ORDER BY timestamp DESC
-        ''').fetchall()
-
-    return render_template('view_badusb_data.html', data_entries=data_entries)
-
-# Lamp Stuff ----------------
-
-@app.route('/lampgetqthhbhbuhohoahlxakkhcv', methods=['GET'])
-def get_color():
-    # For the lamp
-    # Returns the encrypted color code from color.txt
-
-    with open("color.txt", 'r') as f:
-        color = f.read()
-    
-    return color
-
-@app.route('/lampchangewqubmzbiqcwcwcwcwecqqwcszcwecwev', methods=['POST'])
-def change():
-    # For the lamp
-    # Takes a color code and a password
-    # If the password is right, it saves the code to color.txt 
-
-    json_data = request.get_json()
-    
-    # Check if JSON data is None
-    if json_data is None:
-        return jsonify({"Go": "away"}), 400
-    
-    color = json_data.get('color')
-    password = json_data.get('pas')
-    
-    if color is None or password is None:
-        return jsonify({"Go": "away"}), 400
-    
-    with open("password.txt", 'r') as f:
-        good_password = f.read()
-    
-    if password!=good_password:
-        return jsonify({"Go": "away"}), 400
-    else:
-        with open("color.txt", 'w') as f:
-            print(color)
-            towrite=""
-
-            for i in color: 
-                if i not in ["[", "]", " "]:
-                    towrite+=str(i)
-                towrite+=","
-
-            towrite=towrite[0:-1]
-            print(towrite)
-
-            f.write(towrite)
-            
-    #print(color, password)
-
-    return ''
-
-@app.route('/lamp_color_picker')
-def lamp_color_picker():
-    # The route for the lamp color picker for browsers
-    return render_template('color.html')
-
-@app.route('/lamp_color_picker_api_ljbwefobwejflwejfljwef12edwqdqdsf', methods=['POST'])
-def lamp_color_picker_api():
-    # The route for the color picker to send the color to
-    color = request.form.get('color')
-    password = request.form.get('password')
-
-    password = hashlib.sha256(password.encode()).hexdigest()
-
-    if 'password' in session and password == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855":
-        password = session['password']
-
-    if password != "3cd71abb4a6b6be8422ab9cfbb3c28e906cf8f71f73e78a023b08d1a386e16e7":
-        return redirect("/")
-    
-    session['password'] = password
-
-    # Translate color to rgb values and put in color.txt
-    color = color.lstrip('#')
-    with open("color.txt", "w") as file: file.write(str(tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))[1:-1].replace(" ", ""))
-
-    return redirect("/lamp_color_picker")
 
 # Utilities -----------------
 
@@ -402,7 +307,19 @@ def senate_baby():
 
     return render_template('senate.html')
 
+@app.route('/test')
+def test_baby():
+
+    return render_template('test.html')
+
+@app.route('/pictures')
+def pictures():
+
+    images = loaded_image_captions.get_images()
+
+    return render_template("pictures.html", images=images)
+
 
 if __name__ == '__main__':
     #app.run(host="0.0.0.0", debug=True)
-    app.run(host="127.0.0.1", debug=True)
+    app.run(host="0.0.0.0", debug=False, port=5001)

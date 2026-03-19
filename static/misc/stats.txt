@@ -1,0 +1,8 @@
+total_articles:
+total_words:
+total_user_bose_gpus
+total_user_bose_cpus
+total_user_bose_ram
+total_user_bose_jobs
+total_gimps_ghz
+total_stultus_urls

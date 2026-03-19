@@ -1,0 +1,26 @@
+:root {
+  /* Nord Dark Mode Variables */
+  --background: #16171a; /* nord0 */
+  --text: #d8dee9; /* nord7 */
+  --heading: #d8dee9; /* nord6 */
+  --link: #cec3f8; /* nord10 */
+  --footer: rgba(129, 161, 193, 0.7); /* nord5 at 70% */
+  --border-link: rgba(235, 203, 139, 0.3);
+  --border-link-hover: rgba(235, 203, 139, 0.6);
+  --stat_number: #f5ff6a;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Complementary Light Mode Variables */
+    --background: #f8f9fa;
+    --text: #212529;
+    --heading: #495057;
+    --link: #436eee;
+    --footer: #6c757d;
+    --border-link: rgba(67, 110, 238, 0.3);
+    --border-link-hover: rgba(67, 110, 238, 0.6);
+    --stat_number: #f5ff6a;
+
+  }
+}

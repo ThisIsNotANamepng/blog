@@ -3,20 +3,24 @@
 <html>
     <head>
         <title>{{ title }}</title>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">-->
-        <link rel="stylesheet" href="/static/css/pico.grey.min.css">
-        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="/static/css/colors.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/css/article.css">
         <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
     </head>
     <body>
-        <header class="header container">
-            <a href="/"><h1>Homepage</h1></a>
-        </header>
 
-        <main class="container">
+        <main>
+            <header class="header">
+                <a href="/"><h1>Homepage</h1></a>
+            </header>
+            {{ total_words }}
+
             {{ content|safe }}
+
+            <img width="300px" src="https://i.ytimg.com/vi/r2Vaxz1LjaM/maxresdefault.jpg">
         </main>
     </body>
 </html>
