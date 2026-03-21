@@ -152,12 +152,37 @@ def get_last_commit_date(filepath):
 def get_last_commit_date_formatted(filepath, date_format="%Y-%m-%d"):
     commit_date = get_last_commit_date(filepath)
 
-    print("===", filepath)
-
     if commit_date is None:
         return "File not tracked by git or not in a git repository"
 
     return commit_date.strftime(date_format)
+
+def get_stats():
+    global bose_jobs
+    global bose_ram
+    global bose_cpus
+    global bose_gpus
+    global stultus_urls
+
+    with open("/stats.txt") as f:
+        stuff = f.readlines()
+
+    for i in stuff:
+        if "stultus_urls" in i:
+            stultus_urls = i[14:-1]
+            continue
+        elif "jobs" in i:
+            bose_jobs = i[6:-1] 
+            continue
+        elif "cpu_cores" in i:
+            bose_cpus = i[11:-1]
+            continue
+        elif "ram" in i:
+            bose_ram = i[5:-1]
+            continue
+        elif "gpus" in i:
+            bose_gpus = i[6:-1]
+            continue
 
 
 # Article Generation ----------------
@@ -169,6 +194,11 @@ global total_words
 global ghz_days
 global current_commit
 global edit_dates
+global bose_jobs
+global bose_ram
+global bose_cpus
+global bose_gpus
+global stultus_urls
 
 tagss = set()
 articless = set()
@@ -182,17 +212,17 @@ for filename in os.listdir('articles'):
 for filename in os.listdir('articles'):
     if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
-        print(filepath)
         articless.add(filename[:-3])
         edit_dates.append(get_last_commit_date_formatted(filepath))
 
-print(edit_dates)
 data = count_words_in_directory("articles")
 total_articles = data[0]
 total_words = data[1]
 
 ghz_days = find_user_ghz_days("Jack Hagen")
 current_commit = get_current_commit_hash()
+
+get_stats()
 
 # Visitor Pages ----------------
 
@@ -203,11 +233,15 @@ def index():
     global total_articles
     global total_words
     global current_commit
+    global edit_dates
 
     loaded_image = random.choice(os.listdir("static/images/homepage"))
     loaded_image_caption = loaded_image_captions.get_caption(loaded_image)
 
-    return render_template('index.html', tags=tagss, articles=articless, loaded_image_filepath=loaded_image, loaded_image_caption=loaded_image_caption, total_articles=total_articles, total_words=total_words, ghz_days=ghz_days, current_commit=current_commit)
+    sorted_pairs = sorted(zip(edit_dates, articless), reverse=True)
+    edit_dates, articless = zip(*sorted_pairs) if sorted_pairs else ([], [])
+
+    return render_template('index.html', tags=tagss, articles=articless, loaded_image_filepath=loaded_image, loaded_image_caption=loaded_image_caption, total_articles=total_articles, total_words=total_words, ghz_days=ghz_days, current_commit=current_commit, edit_dates=edit_dates, bose_cpus=bose_cpus, bose_ram=bose_ram, bose_gpus=bose_gpus, bose_jobs=bose_jobs, stultus_urls=stultus_urls)
 
 @app.route('/tag/<tag>')
 def tag(tag):
@@ -279,9 +313,6 @@ def boilerplate():
 
     # Render the HTML with a template
     return render_template('article.html', content=html, title="Boilerplate")
-
-
-    return md_template_string
 
 
 # Utilities -----------------

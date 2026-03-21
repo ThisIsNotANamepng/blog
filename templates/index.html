@@ -28,9 +28,10 @@
                 <h1>Jack Hagen</h1>
                 <h3>Total articles: <span class="stat_number">{{ total_articles }}</span></h3>
                 <h3>Total words in articles: <span class="stat_number">{{ total_words }}</span></h3>
-                <h3>RAM/CPU/GPUS used by me on <a href="https://hpc.uwec.edu/">BOSE</a>: </h3>
+                <h3>Total jobs running by me on BOSE: <span class="stat_number">{{ bose_jobs }}</span></h3>
+                <h3>CPU/GPUS/RAM used by me on <a href="https://hpc.uwec.edu/">BOSE</a>:  <span class="stat_number">{{ bose_cpus }}/{{ bose_gpus }}/{{ bose_ram }}GB</span></h3>
                 <h3>Total GHz days donated to <a href="https://www.mersenne.org/">GIMPS</a>: <span class="stat_number">{{ ghz_days }}</span></h3>
-                <h3>Total URLS indexed by Stultus: </h3>
+                <h3>Total URLS indexed by <a href="https://stultus.rip">Stultus</a>: <span class="stat_number">{{ stultus_urls }}</span></h3>
             </div>
 
             <div class="hero-image">
@@ -41,8 +42,7 @@
     
         <section id="about">
             <h2>About Me</h2>
-            <p>I'm Jack Hagen. I'm a student, double majoring in Computer Science and Political Science at the <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>. I do research with my university's Artificial Intelligence and Machine Learning Security research group as well as in my own time. <a href="/articles/Introduction">About me.</a></p>
-            <p>This is the spot for all of my work, accomplishments, thoughts, all that. I put professional thoughts/work/research in the 'research' category and other things less formal in 'articles'. Not all of the articles in /research are formatted as professional papers. but are generally more scholarly than in /articles.</p>
+            <p>I'm Jack Hagen. I'm a student, double majoring in Computer Science and Political Science at the <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>. I want to work in cyber threat intelligence when I graduate. I do international relations and cybersecurity research with faculty at my university as well as in my own time. <a href="/articles/Introduction">About me.</a></p>
             <p>Any opinions found here do not necessarily reflect those of my employer.</p>
             <p>If you want a starting point to understand my work you should start with one of these articles</p>
             <ul>
@@ -66,9 +66,9 @@
         <section id="articles">
             <h2>Recent Articles</h2>
             <ul>
-                {% for article in articles %}
-                    <li><a href="/articles/{{ article }}">{{ article }}</a></li>
-                {% endfor %}
+            {% for article in articles %}
+                <li><a href="/articles/{{ article }}">{{ article }}</a> - {{ edit_dates[loop.index0] }}</li>
+            {% endfor %}
             </ul>
         </section>
 
