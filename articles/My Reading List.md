@@ -1,3 +1,5 @@
+tags:
+date:2025-01-02
 # My Reading List
 
 I love to read. Here are some of my favorites in rough order of most to least liked

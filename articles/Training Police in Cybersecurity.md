@@ -1,4 +1,5 @@
-Cybersecurity
+tags:Cybersecurity
+date:2025-01-02
 # Reflections from Training Police on Cyber Threats
 
 I recently had an opportunity to help my campus' Chief Information Security Officer train our campus' police department on physical cybersecurity attacks. He lectured, I demoed the attacks in our lab.

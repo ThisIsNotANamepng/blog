@@ -1,3 +1,5 @@
+tags:Cryptography
+date:2024-09-02
 # Enhanced Letter Frequencies
 
 Analyzing letter frequencies is a standard tool in breaking rudimentary ciphers. Its a base for people learning cryptography. Usually one would use a classic letter frequency chart such as [https://en.wikipedia.org/wiki/Letter_frequency](https://en.wikipedia.org/wiki/Letter_frequency). 

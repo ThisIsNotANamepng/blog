@@ -1,3 +1,5 @@
+tags:Boilerplate
+date:2024-08-19
 # Boilerplates
 
 Whenever I start a project I often realize I don't remember all of the fundamental syntax to setting up some code or library, so I keep some snippets to get me started here

@@ -201,7 +201,7 @@ global bose_gpus
 global stultus_urls
 
 tagss = set()
-articless = set()
+articless = []
 edit_dates = []
 
 for filename in os.listdir('articles'):
@@ -212,8 +212,12 @@ for filename in os.listdir('articles'):
 for filename in os.listdir('articles'):
     if filename.endswith('.md'):
         filepath = os.path.join('articles', filename)
-        articless.add(filename[:-3])
-        edit_dates.append(get_last_commit_date_formatted(filepath))
+        articless.append(filename[:-3])
+        article_date = tags.get_article_date(filepath)
+        if article_date:
+            edit_dates.append(article_date)
+        else:
+            edit_dates.append(get_last_commit_date_formatted(filepath))
 
 data = count_words_in_directory("articles")
 total_articles = data[0]
@@ -267,11 +271,14 @@ def serve_article_markdown(article):
     if not Path("articles/"+article+".md").exists():
         return render_template('404.html')
 
-    with open("articles/"+article+".md", 'r') as file:
+    filepath = "articles/"+article+".md"
+    metadata, content_start = tags.parse_metadata(filepath)
+
+    with open(filepath, 'r') as file:
         content = file.readlines()
 
-        if "#" not in content[0]: content = content[1:]
-            
+        content = content[content_start:]
+
         title = next((item for item in content if item.startswith('#')), None)[2:]
         content = ''.join(content)
 

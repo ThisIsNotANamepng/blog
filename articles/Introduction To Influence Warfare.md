@@ -1,4 +1,5 @@
-Influence Warfare
+tags:Influence Warfare
+date:2024-08-19
 # Influence Warfare
 
 This is an academic style paper designed to introduce a field of security. This is not the work of a security professional. These are the researched musings of an security student. This is also a living document, things might change as I do more research and change my mind.

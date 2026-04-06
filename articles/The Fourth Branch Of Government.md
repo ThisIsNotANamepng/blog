@@ -1,4 +1,5 @@
-Politics
+tags:Politics
+date:2024-09-02
 # The Fourth Branch of the US Government: 
 
 The United States government has three branches: the Executive (Office of the President), the Legislative (Congress), and the Judicial (Supreme Court and Federal Courts). Built into this system are checks and balances which are designed to ensure that no branch can have unilateral control over the government.

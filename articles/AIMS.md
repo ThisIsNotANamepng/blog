@@ -1,3 +1,5 @@
+tags:Research
+date:2024-09-07
 # AIMS
 
 My first year at [UWEC](https://uwec.edu) I joined UWEC's Artificial Intelligence and Machine Learning Security research group (AIMS) as a student researcher.

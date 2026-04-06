@@ -1,3 +1,5 @@
+tags:
+date:2025-07-15
 # Pseudo Resume
 
 I don't like resumes. They're annoying and formal and don't have enough room for me to put all of the things and nuances that I think employers should know. So I wrote this document to hold all of the things I think should go onto my resume without the fuss of formatting and formal writing. There isn't a strict format, but I'll generally start with the more important stuff on top.

@@ -1,4 +1,5 @@
-Cybersecurity, Machine Learning, LLM
+tags:Cybersecurity, Machine Learning, LLM
+date:2025-09-18
 # My Experience with ARIA
 
 In October I competed in an online [LLMs security competition](https://www.wired.com/story/nist-humane-intelligence-generative-ai-red-team-contest/) as part of the [Assessing Risks and Impacts of AI](https://ai-challenges.nist.gov/aria) program. It was hosted by [Humane Intelligence](https://www.humane-intelligence.org/), which was supported by a number of federal technology standards agencies. After the Trump administration came into office these agencies have required us not to name them (This article has been updated to reflect that). They put out the call for people across the nation to break production LLMs submitted by model creators. Humane Intelligence covered the flights, hotel, and conference costs for the top 30 scoring participants to attend [CAMLIS](https://www.camlis.org/) and do a similar exercise working together in person. I was one of the 30 who beat out the competition (there were over 500 participants) and was able to attend the conference in Washington DC (technically Arlington, Virginia but you could see the capitol building from the room we were red teaming in so I call it what I want).

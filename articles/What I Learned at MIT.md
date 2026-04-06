@@ -1,3 +1,5 @@
+tags:
+date:2025-09-23
 # What I Learned at MIT
 
 Over the summer of 2025 I applied and was accepted to compete at HackMIT, one of the largest and best known hackathons in the world. In September of the same year I traveled to the MIT campus and competed, winning **first place** in a sponsor challenge.

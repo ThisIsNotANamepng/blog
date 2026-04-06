@@ -1,4 +1,5 @@
-Influence Warfare
+tags:Influence Warfare
+date:2024-09-03
 # The Fragility of Single Source Facts
 
 There are key social movements in American history which play a role in defining American identity. The Civil Rights Movement and labor movements in America collectively redefined America by championing the principles of equality, justice, and workers' rights, thus reshaping the nation's understanding of democracy and the pursuit of social and economic justice in order to more accurately pursue the ideals penned out in the Declaration of Independence. These movements are some of America's greatest moments. But they are only effective while they oppose some greater minority evil (upper class, racism). If the movements are opposed to a majority "normal" citizens (working class, etc) they are defined as the evil ones (KKK, Jan 6). So the defining factor of success for these imperative drivers of democracy is the amount of support they get from their fellow citizens (nothing is going to change if everyone hates what they're doing).

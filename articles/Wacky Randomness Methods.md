@@ -1,4 +1,5 @@
-Cybersecurity,Cryptography
+tags:Cybersecurity, Cryptography
+date:2025-01-02
 # Wacky Hardware Randomness Methods
 
 If you're familiar with modern cryptography you know that you need randomness to securely encrypt data. If you know that then you probably know of Cloudflare's [San Francisco headquarters lava lamp wall](https://blog.cloudflare.com/randomness-101-lavarand-in-production) (LavaRand for short). That got me thinking, if you can get cryptographically secure randomness from a lava lamp, what else could you get randomness from? 

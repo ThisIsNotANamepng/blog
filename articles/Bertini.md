@@ -1,3 +1,5 @@
+tags:Math
+date:2024-07-04
 # Bertini
 
 My first year at UWEC, I was given a great opportunity for student research.  A professor, the main developer of [Bertini](https://github.com/bertiniteam/b2), a mathematical package providing numerical homotopy continuation for solving systems of polynomial equations, needed help making Bertini easier to install and use by researchers in the field.

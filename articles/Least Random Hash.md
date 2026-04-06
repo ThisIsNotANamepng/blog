@@ -1,3 +1,5 @@
+tags:
+date:2024-07-21
 # Least Random Hash
 
 I have a research project involving measuring the entropy of encrypted text (that research will eventually be posted here). As I thought of that I wondered what the least random hash was. No idea why, I just did.
