@@ -1,0 +1,5 @@
+build the container with `docker build -t ilikecontainers/personal-website:1.0.x . --no-cache`
+
+push the container to dockerhub with `docker push ilikecontainers/personal-website:1.0.x`
+
+reminder that articles need to be pushed to blog_articles

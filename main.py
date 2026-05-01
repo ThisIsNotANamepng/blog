@@ -9,11 +9,29 @@ import nh3
 from datetime import datetime
 import sqlite3
 import os, random
+import shutil
 import loaded_image_captions
 import re
 import requests
 from bs4 import BeautifulSoup
 import subprocess
+
+ARTICLES_DIR = 'articles'
+ARTICLES_REPO_URL = os.environ.get(
+    'ARTICLES_REPO_URL',
+    'https://github.com/ThisIsNotANamepng/blog-articles.git',
+)
+
+def sync_articles():
+    """Pull a fresh copy of the articles repo. Runs once at process start."""
+    if os.path.exists(ARTICLES_DIR):
+        shutil.rmtree(ARTICLES_DIR)
+    subprocess.run(
+        ['git', 'clone', '--depth=1', ARTICLES_REPO_URL, ARTICLES_DIR],
+        check=True,
+    )
+
+sync_articles()
 
 app = Flask(__name__)
 
@@ -117,36 +135,35 @@ def get_current_commit_hash(short=True):
     return result.stdout.strip()
 
 def get_last_commit_date(filepath):
-    # Convert to relative path if absolute
-    if os.path.isabs(filepath):
-        try:
-            # Get the git repo root
-            repo_root = subprocess.check_output(
-                ['git', 'rev-parse', '--show-toplevel'],
-                stderr=subprocess.PIPE,
-                text=True
-            ).strip()
-            filepath = os.path.relpath(filepath, repo_root)
-        except subprocess.CalledProcessError:
-            return None
+    abs_path = os.path.abspath(filepath)
+    file_dir = os.path.dirname(abs_path)
 
     try:
-        # Get the commit date in ISO 8601 format
+        repo_root = subprocess.check_output(
+            ['git', 'rev-parse', '--show-toplevel'],
+            cwd=file_dir,
+            stderr=subprocess.PIPE,
+            text=True
+        ).strip()
+        rel_path = os.path.relpath(abs_path, repo_root)
+    except subprocess.CalledProcessError:
+        return None
+
+    try:
         result = subprocess.check_output(
-            ['git', 'log', '-1', '--format=%ai', '--', filepath],
+            ['git', 'log', '-1', '--format=%ai', '--', rel_path],
+            cwd=repo_root,
             stderr=subprocess.PIPE,
             text=True
         ).strip()
 
         if not result:
-            return None  # File not tracked by git
+            return None
 
-        # Parse the ISO 8601 date string
-        # Format: 2023-10-15 14:30:25 +0200
         return datetime.fromisoformat(result)
 
     except subprocess.CalledProcessError:
-        return None  # Not a git repo or other error
+        return None
 
 
 def get_last_commit_date_formatted(filepath, date_format="%Y-%m-%d"):
