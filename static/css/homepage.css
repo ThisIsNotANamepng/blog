@@ -20,6 +20,14 @@ main {
   min-width: 300px;
 }
 
+/* The image itself is the link out to the full sized original, so it gets none
+   of the usual underline an inline link would */
+.hero-image a {
+  display: block;
+  border-bottom: none;
+  line-height: 0;
+}
+
 .hero-image img {
   width: 100%;
   border-radius: 16px;
@@ -41,4 +49,21 @@ main {
 .commit {
     float:right;
     font-size: 0.85em;
+}
+
+/* Only rendered when the browser has JavaScript disabled */
+.noscript-box {
+  margin-top: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-link);
+  border-radius: 12px;
+  background: var(--background);
+}
+
+.noscript-box:hover {
+  border-color: var(--border-link-hover);
+}
+
+.noscript-box p:last-child {
+  margin-bottom: 0;
 }

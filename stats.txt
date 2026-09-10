@@ -1,0 +1,5 @@
+jobs: 13
+cpu_cores: 372
+ram: 1354.5
+gpus: 7
+stultus_urls: 101359

@@ -16,6 +16,7 @@
             <header class="header">
                 <a href="/"><h1>Homepage</h1></a>
             </header>
+            {% if edit_date %}Last edited: {{ edit_date }}<br>{% endif %}
             Word count: {{ total_words }}
 
             {{ content|safe }}

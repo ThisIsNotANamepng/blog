@@ -2,3 +2,40 @@ main {
     max-width: 80%;
     /*float: left;*/
 }
+
+/* Fenced code blocks: <pre><code>...</code></pre> from markdown's fenced_code. */
+pre {
+    background: var(--code-background);
+    border: 1px solid var(--code-border);
+    border-radius: 6px;
+    padding: 1em;
+    /* Long lines scroll inside the block instead of stretching the page. */
+    overflow-x: auto;
+}
+
+pre code {
+    /* The <pre> already carries the chrome; don't double it up. */
+    background: none;
+    border: 0;
+    padding: 0;
+    white-space: pre;
+}
+
+code {
+    background: var(--code-background);
+    border: 1px solid var(--code-border);
+    border-radius: 3px;
+    color: var(--code-text);
+    padding: 0.1em 0.3em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid var(--code-border);
+    padding: 0.4em 0.7em;
+}

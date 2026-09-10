@@ -6,32 +6,69 @@ import tags
 import csv 
 import hashlib
 import nh3
-from datetime import datetime
 import sqlite3
 import os, random
 import shutil
 import loaded_image_captions
+#import pseudo_resume
 import re
 import requests
 from bs4 import BeautifulSoup
 import subprocess
+import threading
 
 ARTICLES_DIR = 'articles'
+# Python-Markdown's core dialect has no ``` fences - without this, code blocks
+# in articles render as literal backticks and mangled paragraphs.
+MARKDOWN_EXTENSIONS = ['fenced_code', 'tables']
 ARTICLES_REPO_URL = os.environ.get(
     'ARTICLES_REPO_URL',
-    'https://github.com/ThisIsNotANamepng/blog-articles.git',
+    'https://github.com/ThisIsNotANamepng/blog_articles.git',
 )
+# How stale the articles may get before the next visitor triggers a check.
+ARTICLES_SYNC_INTERVAL = int(os.environ.get('ARTICLES_SYNC_INTERVAL', 600))
 
-def sync_articles():
-    """Pull a fresh copy of the articles repo. Runs once at process start."""
+_sync_lock = threading.Lock()
+_sync_in_flight = False
+_last_sync_check = 0.0
+
+
+def _git(*args, cwd=None):
+    return subprocess.run(
+        ['git', *args],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=60,
+    ).stdout.strip()
+
+
+def clone_articles():
+    """Throw away whatever is on disk and take a fresh shallow clone."""
     if os.path.exists(ARTICLES_DIR):
         shutil.rmtree(ARTICLES_DIR)
-    subprocess.run(
-        ['git', 'clone', '--depth=1', ARTICLES_REPO_URL, ARTICLES_DIR],
-        check=True,
-    )
+    _git('clone', '--depth=1', ARTICLES_REPO_URL, ARTICLES_DIR)
 
-sync_articles()
+
+def sync_articles():
+    """Update the articles repo if upstream moved. True if the files changed."""
+    if not os.path.isdir(os.path.join(ARTICLES_DIR, '.git')):
+        clone_articles()
+        return True
+
+    # ls-remote is a single handshake that transfers no objects, so the routine
+    # every-10-minutes case costs almost nothing and never pulls a repo.
+    remote = _git('ls-remote', ARTICLES_REPO_URL, 'HEAD').split()[0]
+    local = _git('rev-parse', 'HEAD', cwd=ARTICLES_DIR)
+
+    if remote == local:
+        return False
+
+    _git('fetch', '--depth=1', 'origin', 'HEAD', cwd=ARTICLES_DIR)
+    _git('reset', '--hard', 'FETCH_HEAD', cwd=ARTICLES_DIR)
+    _git('clean', '-fd', cwd=ARTICLES_DIR)
+    return True
 
 app = Flask(__name__)
 
@@ -134,46 +171,6 @@ def get_current_commit_hash(short=True):
 
     return result.stdout.strip()
 
-def get_last_commit_date(filepath):
-    abs_path = os.path.abspath(filepath)
-    file_dir = os.path.dirname(abs_path)
-
-    try:
-        repo_root = subprocess.check_output(
-            ['git', 'rev-parse', '--show-toplevel'],
-            cwd=file_dir,
-            stderr=subprocess.PIPE,
-            text=True
-        ).strip()
-        rel_path = os.path.relpath(abs_path, repo_root)
-    except subprocess.CalledProcessError:
-        return None
-
-    try:
-        result = subprocess.check_output(
-            ['git', 'log', '-1', '--format=%ai', '--', rel_path],
-            cwd=repo_root,
-            stderr=subprocess.PIPE,
-            text=True
-        ).strip()
-
-        if not result:
-            return None
-
-        return datetime.fromisoformat(result)
-
-    except subprocess.CalledProcessError:
-        return None
-
-
-def get_last_commit_date_formatted(filepath, date_format="%Y-%m-%d"):
-    commit_date = get_last_commit_date(filepath)
-
-    if commit_date is None:
-        return "File not tracked by git or not in a git repository"
-
-    return commit_date.strftime(date_format)
-
 def get_stats():
     global bose_jobs
     global bose_ram
@@ -181,7 +178,7 @@ def get_stats():
     global bose_gpus
     global stultus_urls
 
-    with open("/stats.txt") as f:
+    with open("/stats.txt", "r") as f:
         stuff = f.readlines()
 
     for i in stuff:
@@ -204,43 +201,99 @@ def get_stats():
 
 # Article Generation ----------------
 
-global tagss
-global articless
-global total_articles
-global total_words
 global ghz_days
 global current_commit
-global edit_dates
 global bose_jobs
 global bose_ram
 global bose_cpus
 global bose_gpus
 global stultus_urls
 
-tagss = set()
-articless = []
-edit_dates = []
 
-for filename in os.listdir('articles'):
-    if filename.endswith('.md'):
-        filepath = os.path.join('articles', filename)
+def build_article_index():
+    """Read every article off disk and return one immutable-ish snapshot.
+
+    Everything the request handlers need lives in the returned dict so a refresh
+    can swap it in with a single assignment - no half-updated globals.
+    """
+    tagss = set()
+    articless = []
+    edit_dates = []
+
+    for filename in os.listdir(ARTICLES_DIR):
+        if not filename.endswith('.md'):
+            continue
+
+        filepath = os.path.join(ARTICLES_DIR, filename)
         tagss.update(tags.parse_markdown_tags(filepath))
-
-for filename in os.listdir('articles'):
-    if filename.endswith('.md'):
-        filepath = os.path.join('articles', filename)
         articless.append(filename[:-3])
-        article_date = tags.get_article_date(filepath)
-        if article_date:
-            edit_dates.append(article_date)
-        else:
-            edit_dates.append(get_last_commit_date_formatted(filepath))
 
-data = count_words_in_directory("articles")
-total_articles = data[0]
-total_words = data[1]
+        edit_dates.append(tags.get_article_date(filepath) or None)
 
-ghz_days = find_user_ghz_days("Jack Hagen")
+    # Sort newest-first once, here, so the handlers only ever read.
+    # Undated articles sort last rather than blowing up the None/str compare.
+    sorted_pairs = sorted(zip(edit_dates, articless),
+                          key=lambda pair: (pair[0] or '', pair[1]), reverse=True)
+    edit_dates, articless = zip(*sorted_pairs) if sorted_pairs else ((), ())
+
+    file_count, word_count = count_words_in_directory(ARTICLES_DIR)
+
+    return {
+        'tags': tagss,
+        'articles': articless,
+        'edit_dates': edit_dates,
+        'total_articles': file_count,
+        'total_words': word_count,
+    }
+
+
+def _refresh_articles():
+    """Background worker: check upstream, rebuild the index if anything moved."""
+    global article_index
+    global _sync_in_flight
+
+    try:
+        if sync_articles():
+            article_index = build_article_index()
+            print('Articles updated from upstream')
+    except (subprocess.SubprocessError, OSError) as e:
+        # Keep serving the copy we already have and try again next interval.
+        print(f'Article sync failed: {e}')
+    finally:
+        with _sync_lock:
+            _sync_in_flight = False
+
+
+@app.before_request
+def refresh_articles_if_stale():
+    """Let a visitor trigger a sync, but never make them wait on it.
+
+    The request is served from the articles already on disk; whoever shows up
+    after the background thread finishes gets the new ones.
+    """
+    global _last_sync_check
+    global _sync_in_flight
+
+    now = time.monotonic()
+
+    with _sync_lock:
+        if _sync_in_flight or now - _last_sync_check < ARTICLES_SYNC_INTERVAL:
+            return
+        _last_sync_check = now
+        _sync_in_flight = True
+
+    threading.Thread(target=_refresh_articles, daemon=True).start()
+
+
+if not os.path.isdir(os.path.join(ARTICLES_DIR, '.git')):
+    clone_articles()
+
+article_index = build_article_index()
+_last_sync_check = time.monotonic()
+
+#UNCOMMENT
+#ghz_days = find_user_ghz_days("Jack Hagen")
+ghz_days=1
 current_commit = get_current_commit_hash()
 
 get_stats()
@@ -249,32 +302,24 @@ get_stats()
 
 @app.route('/')
 def index():
-    global tagss
-    global articless
-    global total_articles
-    global total_words
     global current_commit
-    global edit_dates
+
+    articles = article_index
 
     loaded_image = random.choice(os.listdir("static/images/homepage"))
     loaded_image_caption = loaded_image_captions.get_caption(loaded_image)
 
-    sorted_pairs = sorted(zip(edit_dates, articless), reverse=True)
-    edit_dates, articless = zip(*sorted_pairs) if sorted_pairs else ([], [])
-
-    return render_template('index.html', tags=tagss, articles=articless, loaded_image_filepath=loaded_image, loaded_image_caption=loaded_image_caption, total_articles=total_articles, total_words=total_words, ghz_days=ghz_days, current_commit=current_commit, edit_dates=edit_dates, bose_cpus=bose_cpus, bose_ram=bose_ram, bose_gpus=bose_gpus, bose_jobs=bose_jobs, stultus_urls=stultus_urls)
+    return render_template('index.html', tags=articles['tags'], articles=articles['articles'], loaded_image_filepath=loaded_image, loaded_image_caption=loaded_image_caption, total_articles=articles['total_articles'], total_words=articles['total_words'], ghz_days=ghz_days, current_commit=current_commit, edit_dates=articles['edit_dates'], bose_cpus=bose_cpus, bose_ram=bose_ram, bose_gpus=bose_gpus, bose_jobs=bose_jobs, stultus_urls=stultus_urls)
 
 @app.route('/tag/<tag>')
 def tag(tag):
-    global tagss
-    
     tag = nh3.clean(tag)
 
     for char in tag:
         if not char.isalpha() and char != " ":
             return 'Are you trying to hack me?'
 
-    if tag not in tagss:
+    if tag not in article_index['tags']:
         return "You can't do that"
 
     articles = tags.get_articles_with_tag(tag, 'articles')
@@ -291,6 +336,8 @@ def serve_article_markdown(article):
     filepath = "articles/"+article+".md"
     metadata, content_start = tags.parse_metadata(filepath)
 
+    edit_date = metadata.get('date') or None
+
     with open(filepath, 'r') as file:
         content = file.readlines()
 
@@ -302,20 +349,35 @@ def serve_article_markdown(article):
     total_words = len(content.split())
 
     # Convert Markdown to HTML
-    html = markdown.markdown(content)
+    html = markdown.markdown(content, extensions=MARKDOWN_EXTENSIONS)
 
     # Render the HTML with a template
-    return render_template('article.html', content=html, title=title, total_words=total_words)
+    return render_template('article.html', content=html, title=title, total_words=total_words, edit_date=edit_date)
 
 @app.route('/research')
 @app.route('/research/')
 def serve_research():
     return render_template('research.html')
 
+@app.route('/projects')
+@app.route('/projects/')
+def projects():
+    return render_template('projects.html')
+
 @app.route('/now')
 def now():
     # Page with current updates
     return render_template('now.html')
+
+#@app.route('/pseudo_resume')
+#@app.route('/pseudo-resume')
+#def pseudo_resume_page():
+#    """Interactive version of articles/Pseudo Resume.md."""
+#    return render_template(
+#        'pseudo_resume.html',
+#        search_blob=pseudo_resume.search_blob,
+#        **pseudo_resume.page_data()
+#    )
 
 @app.route('/resume')
 def resume():
@@ -330,10 +392,8 @@ def gpg_path():
 @app.route('/boilerplates')
 @app.route('/boilerplate')
 def boilerplate():
-    readme_file = open("articles/Boilerplate.md", "r")
-    content = markdown.markdown(readme_file.read(), extensions=["fenced_code"])
-
-    html = markdown.markdown(content)
+    with open("articles/Boilerplate.md", "r") as readme_file:
+        html = markdown.markdown(readme_file.read(), extensions=MARKDOWN_EXTENSIONS)
 
     # Render the HTML with a template
     return render_template('article.html', content=html, title="Boilerplate")

@@ -8,6 +8,9 @@
   --border-link: rgba(235, 203, 139, 0.3);
   --border-link-hover: rgba(235, 203, 139, 0.6);
   --stat_number: #f5ff6a;
+  --code-background: #1e2027;
+  --code-border: rgba(216, 222, 233, 0.15);
+  --code-text: #e5e9f0;
 }
 
 @media (prefers-color-scheme: light) {
@@ -21,6 +24,8 @@
     --border-link: rgba(67, 110, 238, 0.3);
     --border-link-hover: rgba(67, 110, 238, 0.6);
     --stat_number: #f5ff6a;
-
+    --code-background: #eceef1;
+    --code-border: rgba(33, 37, 41, 0.15);
+    --code-text: #212529;
   }
 }

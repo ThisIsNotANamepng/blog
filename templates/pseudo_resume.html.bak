@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pseudo Resume</title>
+    <link rel="stylesheet" href="/static/css/colors.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pseudo_resume.css">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
+    <script defer src="/static/js/pseudo_resume.js"></script>
+</head>
+
+{#- One card. `prefix` keeps element ids unique across the two renders. -#}
+{% macro entry_card(e, prefix) %}
+    <details class="entry cat-{{ e.cats[0] }}"
+             id="{{ prefix }}-{{ e.id }}"
+             data-id="{{ e.id }}"
+             data-cats="{{ e.cats|join(' ') }}"
+             data-band="{{ e.band }}"
+             data-text="{{ search_blob(e)|lower }}">
+        <summary class="entry-head">
+            <div class="entry-heading">
+                <span class="entry-title">{{ e.title|safe }}</span>
+                {% if e.summary %}<span class="entry-summary">{{ e.summary|safe }}</span>{% endif %}
+            </div>
+            <div class="entry-meta">
+                <span class="entry-period">
+                    {% if e.current %}<span class="live-dot" title="Ongoing"></span>{% endif %}
+                    {{ e.period|safe }}
+                </span>
+                <span class="entry-tags">
+                    {% for c in e.cats %}<span class="tag tag-{{ c }}">{{ cat_label[c] }}</span>{% endfor %}
+                </span>
+            </div>
+            <span class="entry-chevron" aria-hidden="true">+</span>
+        </summary>
+        <div class="entry-body">
+            {% for d in e.details|default([]) %}<p>{{ d|safe }}</p>{% endfor %}
+            {% if e.children %}
+                <ul class="entry-children">
+                    {% for c in e.children %}<li>{{ c|safe }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+            {% if e.links %}
+                <div class="entry-links">
+                    {% for l in e.links %}<a href="{{ l.url }}">{{ l.label }} &rarr;</a>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </details>
+{% endmacro %}
+
+<body>
+<main id="page" class="view-timeline">
+
+    <header class="header">
+        <a href="/"><h1>Homepage</h1></a>
+    </header>
+
+    <h1 class="page-title">Pseudo Resume</h1>
+
+    <p class="lede">
+        I don't like resumes. They're annoying and formal and don't have enough room for the things and
+        nuances I think employers should know. This is everything that belongs on mine, without the fuss
+        of formatting &mdash; sortable by year, filterable by what you actually care about, and expandable
+        when you want the story behind a line.
+    </p>
+    <p class="lede-links">
+        <a href="/articles/Pseudo Resume">The original stream-of-consciousness version</a>
+        &middot;
+        <a href="/resume">The formal PDF resume</a>
+    </p>
+
+    <section class="stats" aria-label="By the numbers">
+        {% for s in stats %}
+            <div class="stat">
+                <div class="stat-value"
+                     data-value="{{ s.value }}"
+                     data-prefix="{{ s.prefix|default('') }}"
+                     data-suffix="{{ s.suffix|default('') }}">{{ s.prefix|default('') }}{{ s.value }}{{ s.suffix|default('') }}</div>
+                <div class="stat-label">{{ s.label }}</div>
+                <div class="stat-note">{{ s.note }}</div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <section class="controls" aria-label="Filters">
+        <div class="control-row">
+            <label class="search-wrap">
+                <span class="visually-hidden">Search everything</span>
+                <input type="search" id="q" placeholder="Search everything ( / )" autocomplete="off">
+            </label>
+            <div class="view-toggle" role="group" aria-label="View">
+                <button type="button" class="view-btn is-on" data-view="timeline">Timeline</button>
+                <button type="button" class="view-btn" data-view="groups">By category</button>
+                <button type="button" class="view-btn" data-view="list">Compact</button>
+            </div>
+        </div>
+
+        <div class="control-row">
+            <div class="chips" id="chips">
+                <button type="button" class="chip chip-all is-on" data-cat="all" aria-pressed="true">Everything</button>
+                {% for c in categories %}
+                    <button type="button" class="chip chip-{{ c.id }}" data-cat="{{ c.id }}" aria-pressed="false">{{ c.label }}</button>
+                {% endfor %}
+            </div>
+            <div class="control-actions">
+                <span class="count" id="count" aria-live="polite"></span>
+                <button type="button" class="linkish" id="expand-all">Expand all</button>
+                <button type="button" class="linkish" id="collapse-all">Collapse all</button>
+            </div>
+        </div>
+    </section>
+
+    <p class="empty" id="empty" hidden>Nothing matches that. <button type="button" class="linkish" id="reset">Clear the filters</button></p>
+
+    {# Timeline render. The compact view restyles this same markup. #}
+    <section id="timeline" class="pane">
+        {% for band, band_entries in by_band %}
+            <section class="band" data-band="{{ band }}">
+                <h2 class="band-label">{{ band }}</h2>
+                <div class="band-entries">
+                    {% for e in band_entries %}{{ entry_card(e, 'tl') }}{% endfor %}
+                </div>
+            </section>
+        {% endfor %}
+    </section>
+
+    {# Grouped-by-category render. Entries with several categories appear more than once. #}
+    <section id="groups" class="pane" hidden>
+        {% for c, cat_entries in by_cat %}
+            <section class="band group-band" data-cat="{{ c.id }}">
+                <h2 class="band-label band-label-{{ c.id }}">{{ c.label }}</h2>
+                <div class="band-entries">
+                    {% for e in cat_entries %}{{ entry_card(e, 'gr-' ~ c.id) }}{% endfor %}
+                </div>
+            </section>
+        {% endfor %}
+    </section>
+
+    <footer>
+        Everything here is also written out in prose in
+        <a href="/articles/Pseudo Resume">the Pseudo Resume article</a>.
+        Press <kbd>/</kbd> to search, <kbd>Esc</kbd> to clear.
+    </footer>
+
+</main>
+</body>
+</html>

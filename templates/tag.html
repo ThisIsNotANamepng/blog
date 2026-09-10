@@ -1,33 +1,31 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ tag }}</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
-    <link rel="stylesheet" href="/static/css/pico.grey.min.css">
-    <link rel="stylesheet" href="/static/style.css">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ tag }}</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+        <link rel="stylesheet" href="/static/css/colors.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/css/tag.css">
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
+    </head>
+    <body>
 
-</head>
-<body class="container">
-    <header class="header">
-        <a href="/"><h1>Homepage</h1></a>
-    </header>
+        <main>
+            <header class="header">
+                <a href="/"><h1>Homepage</h1></a>
+            </header>
 
-    <h1>Articles with tag: {{ tag }}</h1>
-    <ul>
-        {% for article in articles %}
-            <li><a href="/articles/{{ article.title }}">{{ article.title }}</a></li>
-        {% endfor %}
-    </ul>
+            <h2>Articles with tag: {{ tag }}</h2>
 
-    <h1>Research</h1>
-    <ul>
-        {% for researc in research %}
-            <li><a href="/research/{{ researc.title }}">{{ researc.title }}</a></li>
-        {% endfor %}
-    </ul>
+            <ul>
+                {% for article in articles %}
+                    <li><a href="/articles/{{ article.title }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
 
-</body>
+        </main>
+    </body>
 </html>

@@ -1,0 +1,116 @@
+main {
+  max-width: 80%;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-link);
+  border-radius: 12px;
+  background: var(--background);
+}
+
+.project-card:hover {
+  border-color: var(--border-link-hover);
+}
+
+.project-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+.project-card h3 a {
+  border-bottom: none;
+}
+
+.project-card h3 a:hover {
+  border-bottom: 1px solid var(--border-link-hover);
+}
+
+.repo-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  margin-right: 0.4rem;
+  fill: var(--footer);
+}
+
+.project-owner {
+  color: var(--footer);
+}
+
+.project-description {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.project-topics {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.project-topics li {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--border-link);
+  border-radius: 999px;
+  color: var(--footer);
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--footer);
+}
+
+.language-dot {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  background: var(--stat_number);
+}
+
+@media (max-width: 600px) {
+  main {
+    max-width: 92%;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* GitHub language colors. Add more as needed and use them like
+   <span class="language-dot lang-python"></span> */
+.lang-python { background: #3572a5; }
+.lang-javascript { background: #f1e05a; }
+.lang-typescript { background: #3178c6; }
+.lang-c { background: #555555; }
+.lang-cpp { background: #f34b7d; }
+.lang-rust { background: #dea584; }
+.lang-go { background: #00add8; }
+.lang-shell { background: #89e051; }
+.lang-html { background: #e34c26; }
+.lang-css { background: #563d7c; }
+.lang-java { background: #b07219; }
+.lang-jupyter { background: #da5b0b; }

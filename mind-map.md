@@ -10,15 +10,15 @@
     - [ ] Total IOCs in Menoa
     - [x] Total articles / words
 
-- [x] Add onion site (https://mayvane.day/)
+- [ ] Add onion site (https://mayvane.day/)
 
 - [x] Add gpg key
 
-- [x] Add gemini site
+- [ ] Add gemini site
 
-- [x] Add summary boxes about me (https://neil.computer/)
+- [ ] Add summary boxes about me (https://neil.computer/), maybe on the about me page
 
-- [ ] Make it render to look like LaTeX (latex.css)
+- [x] Make it render to look like LaTeX (latex.css)
 
 - [x] Add Google Scholar link
 
@@ -51,7 +51,7 @@
 
 - [ ] Add pictures of myself presenting
 
-- [x] Have a nice looking picture under my name on the front page, a collection of random pcitures that I think explain me, and when reloaded or clikced switch to another random picture
+- [x] Have a nice looking picture under my name on the front page, a collection of random pictures that I think explain me, and when reloaded or clicked switch to another random picture
 
 - [ ] Add more reference and update now page (https://sive.rs/now2)
 
@@ -59,7 +59,7 @@
 
 - [ ] Add laptop backup system to server
 
-
+- [ ] Add a graph with the number of articles per tag on the homepage
 
 
 

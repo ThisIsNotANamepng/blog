@@ -1,0 +1,419 @@
+"""Structured data behind the /pseudo_resume page.
+
+The prose version of all of this lives in `articles/Pseudo Resume.md`. This
+module holds the same information as records instead of paragraphs so the page
+can group it by year, filter it by category, and search it.
+
+Nothing here is user input, so the strings may contain markup; the template
+renders them with |safe.
+"""
+
+import html
+import re
+
+# Category order here is the order the filter chips and the grouped view use.
+CATEGORIES = [
+    {"id": "cyber", "label": "Cybersecurity"},
+    {"id": "leadership", "label": "Leadership"},
+    {"id": "research", "label": "Research"},
+    {"id": "academics", "label": "Academics"},
+    {"id": "competition", "label": "Competition"},
+    {"id": "work", "label": "Work"},
+    {"id": "personal", "label": "Personal"},
+]
+
+# Timeline bands, newest first. Every entry names one of these.
+BANDS = ["Ongoing", "2025", "2024", "High school"]
+
+# Headline numbers, every one of them pulled from the prose version.
+STATS = [
+    {"value": 3, "label": "organizations founded",
+     "note": "Model UN, Cybersecurity Club, CSSAG"},
+    {"value": 3, "label": "clubs led as president",
+     "note": "Model UN, Cybersecurity Club, Student ACM"},
+    {"value": 85, "label": "machines I help administer",
+     "note": "Two supercomputing clusters at UWEC"},
+    {"value": 71, "label": "teams beaten at Cyphercon",
+     "note": "First place at Wisconsin's largest security conference, 2025"},
+    {"value": 500, "suffix": "+", "label": "in the NIST ARIA red team",
+     "note": "Top 30 finish out of the full field"},
+    {"value": 1000, "suffix": "+", "label": "delegates faced at ChoMUN",
+     "note": "Harvard, Stanford, Yale, Berkeley, Georgetown, Purdue"},
+    {"value": 1.2, "prefix": "$", "suffix": "M", "label": "IT budget I vote on",
+     "note": "UWEC Student Senate Information Technology Commission"},
+    {"value": 11, "suffix": "+", "label": "years of martial arts",
+     "note": "Aikido, Shorin Ryu, Shotokan, Tai Chi"},
+]
+
+ENTRIES = [
+    # --- Ongoing -----------------------------------------------------------
+    {
+        "id": "degree",
+        "band": "Ongoing",
+        "title": "Computer Science &amp; Political Science, UWEC",
+        "period": "In progress",
+        "current": True,
+        "cats": ["academics"],
+        "summary": "Double major, with certificates in Chinese and Transnational Asian Studies.",
+        "details": [
+            'Undergraduate at the <a href="https://uwec.edu">University of Wisconsin &ndash; Eau Claire</a>, '
+            'double majoring in <b>Computer Science and Political Science</b> with certificates in '
+            '<b>Chinese</b> and <b>Transnational Asian Studies</b>.',
+        ],
+        "children": [
+            'Member of the <a href="https://www.uwec.edu/academics/mark-stephen-cosby-honors-college">'
+            'UWEC Honors College</a>.',
+        ],
+    },
+    {
+        "id": "focus",
+        "band": "Ongoing",
+        "title": "Threat intelligence and influence warfare",
+        "period": "The through-line",
+        "current": True,
+        "cats": ["cyber", "research"],
+        "summary": "Learning everything you can about the people behind the attacks.",
+        "details": [
+            'My specific interest is cybersecurity <b>threat intelligence</b> &mdash; learning what you '
+            'can about cyber threat actors. Alongside that I work on '
+            '<a href="/articles/Introduction To Influence Warfare">influence warfare</a> and '
+            'disinformation.',
+        ],
+    },
+    {
+        "id": "certs",
+        "band": "Ongoing",
+        "title": "Cybersecurity and IT certifications",
+        "period": "Accumulating",
+        "current": True,
+        "cats": ["cyber", "academics"],
+        "summary": "Various certificates across security and general IT.",
+        "details": [
+            'A comprehensive list lives on '
+            '<a href="https://www.credly.com/users/jack-hagen.fc2778b2">Credly</a>.',
+        ],
+    },
+    {
+        "id": "research",
+        "band": "Ongoing",
+        "title": "UWEC research projects",
+        "period": "2023 &ndash; present",
+        "current": True,
+        "cats": ["research", "cyber", "academics"],
+        "summary": "Five official research projects with three different professors.",
+        "details": [
+            'Work spanning polynomial system solvers, machine learning on network traffic, hands-on '
+            'cryptography teaching tools, AI-written phishing datasets, and Bluetooth tracking of edge '
+            'devices. Full write-ups on the <a href="/research">research page</a>.',
+        ],
+        "links": [{"label": "All research projects", "url": "/research"}],
+    },
+    {
+        "id": "languages",
+        "band": "Ongoing",
+        "title": "Chinese, Arabic, and Klingon",
+        "period": "Since middle school",
+        "current": True,
+        "cats": ["personal", "academics"],
+        "summary": "Chinese in school since middle school; Arabic and Klingon for fun.",
+        "details": [
+            'I have taken <b>Chinese</b> in school since middle school and earned a Chinese certificate '
+            'in college. I am also learning <b>Arabic</b> and '
+            '<a href="https://en.wikipedia.org/wiki/Klingon_language"><b>Klingon</b></a>.',
+        ],
+        "children": [
+            'UWEC holds an annual <b>international poetry</b> reading night for poetry in languages '
+            'other than English.',
+            '2024: read a Matsuo Basho poem in <b>Japanese</b>.',
+            '2025: read a <b>Chinese</b> poem with two other students, plus the '
+            '<i>To Be Or Not To Be</i> soliloquy in <b>Klingon</b>.',
+        ],
+    },
+    {
+        "id": "martial-arts",
+        "band": "Ongoing",
+        "title": "Martial arts",
+        "period": "Since 2014",
+        "current": True,
+        "cats": ["personal"],
+        "summary": "Over 11 years across four disciplines.",
+        "children": [
+            '<b>Wadokai Aikido</b> since 2014.',
+            '<b>Shorin Ryu Karate</b> since 2023.',
+            '<b>Tai Chi</b> since 2023.',
+            '<b>Shotokan Karate</b> for an honors class in Spring 2025 &mdash; I have since become '
+            'treasurer of the newly formed Shotokan Karate club.',
+        ],
+    },
+    {
+        "id": "linux",
+        "band": "Ongoing",
+        "title": "Linux, every day",
+        "period": "Daily driver",
+        "current": True,
+        "cats": ["personal", "work"],
+        "summary": "On my personal machine, my work laptop, and the clusters.",
+        "details": [
+            'My work laptop and the clusters both run Rocky Linux, and Linux is what I use at home too.',
+        ],
+    },
+
+    # --- 2025 --------------------------------------------------------------
+    {
+        "id": "hackmit",
+        "band": "2025",
+        "title": "First place in a sponsor challenge at HackMIT",
+        "period": "Fall 2025",
+        "cats": ["competition", "cyber"],
+        "summary": "Privacy-preserving, verifiable OAuth built on trusted execution environments.",
+        "details": [
+            'Accepted into <a href="https://hackmit.org/">HackMIT</a> and won first place in a sponsor '
+            'challenge. My team built a privacy-preserving, verifiable OAuth system on EigenCloud. It '
+            'leverages <b>Trusted Execution Environments</b> to validate emails and other dynamic '
+            'identity attributes, so anonymity is preserved even from the administrators of the service.',
+        ],
+        "links": [{"label": "diagonalize on GitHub",
+                   "url": "https://github.com/ThisIsNotANamepng/diagonalize"}],
+    },
+    {
+        "id": "cyphercon",
+        "band": "2025",
+        "title": "Led the Cyphercon team to first place",
+        "period": "2024 &amp; 2025",
+        "cats": ["competition", "cyber", "leadership"],
+        "summary": "First out of 71 teams at Wisconsin's largest security conference.",
+        "details": [
+            'In 2025 I led the cybersecurity club\'s team to '
+            '<a href="https://cyphercon.com/">Cyphercon</a>, Wisconsin\'s largest security conference. '
+            'We competed against <b>71 teams</b>, <b>placed first</b>, and won a lifetime ticket to all '
+            'future conferences.',
+        ],
+        "children": [
+            '2024: attended as a member of the team and won the Hungry Hungry Hackers competition, '
+            'earning a VIP badge to the 2025 conference.',
+        ],
+    },
+    {
+        "id": "itc",
+        "band": "2025",
+        "title": "Director, Student Senate Information Technology Commission",
+        "period": "Spring 2025 &ndash; present",
+        "current": True,
+        "cats": ["leadership", "academics"],
+        "summary": "Voting member of student senate; annually approves the $1.2M campus IT budget.",
+        "details": [
+            'Voted in as director of UWEC\'s <b>Information Technology Commission</b>, which advises the '
+            'senate on IT needs, annually approves the <b>$1.2 million</b> UWEC IT budget, and works to '
+            'improve campus IT based on student needs. I am a voting member of student senate.',
+            'I was a commission member from Winter 2024 until I was voted in as director.',
+        ],
+    },
+    {
+        "id": "cssag",
+        "band": "2025",
+        "title": "Founding the Computer Science Student Advisory Group",
+        "period": "Spring 2025 &ndash; present",
+        "current": True,
+        "cats": ["leadership", "academics"],
+        "summary": "Getting students a formal voice with the CS faculty. Currently versus red tape.",
+        "details": [
+            'CSSAG aims to work with the CS professors to address student concerns and create more '
+            'opportunities for students to be heard by the faculty. I am currently fighting red tape and '
+            'a bureaucracy &mdash; good thing I am studying political science and know how to get into a '
+            'political fight.',
+        ],
+    },
+
+    # --- 2024 --------------------------------------------------------------
+    {
+        "id": "hpc",
+        "band": "2024",
+        "title": "Student system administrator, UWEC High Performance Computing Center",
+        "period": "April 2024 &ndash; present",
+        "current": True,
+        "cats": ["work", "cyber"],
+        "summary": "One of a small team running two supercomputing clusters, and the team's security person.",
+        "details": [
+            'Hired onto the small team that manages UWEC\'s two '
+            '<a href="https://hpc.uwec.edu">supercomputing clusters</a> &mdash; about <b>85 machines</b> '
+            'altogether. We present to, help, and teach the few hundred students and faculty researchers '
+            'who use the clusters, keep all of the many moving parts working, and make sure everything '
+            'stays up to date, secure, and available.',
+            'I am also the team\'s <b>&ldquo;security person&rdquo;</b>, so I am generally in charge of '
+            'most security-related work.',
+        ],
+        "links": [{"label": "hpc.uwec.edu", "url": "https://hpc.uwec.edu"}],
+    },
+    {
+        "id": "cyber-club",
+        "band": "2024",
+        "title": "Founder and president, UWEC Cybersecurity Club",
+        "period": "Fall 2024 &ndash; present",
+        "current": True,
+        "cats": ["leadership", "cyber"],
+        "summary": "Built the tools, the competitive team, and the weekly curriculum out of nothing.",
+        "details": [
+            'I built numerous technical tools and a competitive cybersecurity team. I teach the concept '
+            'each week, lead hands-on activities, program and work on a lot of '
+            '<a href="https://github.com/Blugold-Group">projects</a>, and generally push to create an '
+            'engaging, educational, and accepting environment out of nothing.',
+            'Worth noting: nothing I teach or use in the club came from my normal CS program. I learned '
+            'all of it on my own in my free time.',
+        ],
+        "links": [{"label": "Blugold Group on GitHub", "url": "https://github.com/Blugold-Group"}],
+    },
+    {
+        "id": "model-un",
+        "band": "2024",
+        "title": "Founder and president, UWEC Model United Nations",
+        "period": "Fall 2024 &ndash; present",
+        "current": True,
+        "cats": ["leadership", "competition"],
+        "summary": "Founded the club and led the competitive team against 1,000+ delegates.",
+        "details": [
+            'I planned Model UN\'s trip to the <a href="https://www.chomun.org/">ChoMUN</a> conference '
+            'and led our competitive team, working in the on-the-fly secretariat\'s committee. We '
+            'competed against over <b>1,000 delegates</b> from across the country, including Harvard, '
+            'Johns Hopkins, Stanford, Purdue, Yale, Berkeley, and Georgetown.',
+        ],
+    },
+    {
+        "id": "acm",
+        "band": "2024",
+        "title": "President, Student Association for Computing Machinery",
+        "period": "Winter 2024 &ndash; present",
+        "current": True,
+        "cats": ["leadership", "academics"],
+        "summary": "Running our student ACM chapter's weekly activities.",
+        "details": [
+            'I organize our activities each week and work to create opportunities for students in the '
+            'department.',
+        ],
+    },
+    {
+        "id": "aria",
+        "band": "2024",
+        "title": "NIST ARIA LLM security competition, top 30 of 500+",
+        "period": "October 2024",
+        "cats": ["competition", "cyber", "research"],
+        "summary": "Red-teamed production LLMs; earned a trip to CAMLIS in DC to do it again in person.",
+        "details": [
+            'An online LLM security competition run as part of the NIST <b>Assessing Risks and Impacts '
+            'of AI</b> program, hosted by Humane Intelligence with support from the <b>National '
+            'Institute for Standards in Technology</b>. They called for people across the nation to '
+            'break production LLMs submitted by model creators.',
+            'Humane Intelligence covered flights, hotel, and conference costs for the top 30 scoring '
+            'participants out of more than <b>500</b>. I was one of the 30, and attended the '
+            '<b>Conference for Applied Machine Learning in Information Security</b> to do a similar '
+            'exercise in person.',
+            'Technically it was in Arlington, Virginia, but you could see the Capitol building from the '
+            'room we were red teaming in, so I call it Washington DC.',
+        ],
+    },
+    {
+        "id": "mudac",
+        "band": "2024",
+        "title": "Midwestern Undergraduate Data Analytics Competition",
+        "period": "2024, led the team in 2025",
+        "cats": ["competition", "research"],
+        "summary": "26 hours straight on real client datasets, then a presentation to judges.",
+        "details": [
+            'At <a href="https://www.mudac.org/">MUDAC</a> our UWEC team stayed up for 26 hours straight '
+            'analyzing datasets from a real-life client to answer questions about crop optimization, '
+            'then presented to judges. In <b>2025 I led our team</b>.',
+        ],
+    },
+    {
+        "id": "police",
+        "band": "2024",
+        "title": "Demoed physical attacks for campus police training",
+        "period": "2024",
+        "cats": ["cyber", "work"],
+        "summary": "Asked by UWEC's CISO to help train the campus police department.",
+        "details": [
+            'I helped demo physical cyber attacks during a training for our campus police department, '
+            'and I work with our Chief Information Security Officer on various other projects.',
+        ],
+    },
+
+    # --- High school -------------------------------------------------------
+    {
+        "id": "tech-intern",
+        "band": "High school",
+        "title": "Tech intern and summer IT intern",
+        "period": "Junior &amp; senior year",
+        "cats": ["work", "cyber"],
+        "summary": "Ran a helpdesk for staff and students; summers with the district IT department.",
+        "details": [
+            'As a &ldquo;tech intern&rdquo; I was part of the group that operated a helpdesk for staff '
+            'and students. Over the summers I interned with the IT department: upgrading systems, '
+            'managing the hundreds of Chromebooks and iPads the district owned, and checking the AV '
+            'technology in every classroom across the 10-school district.',
+        ],
+    },
+    {
+        "id": "start-college-now",
+        "band": "High school",
+        "title": "Start College Now",
+        "period": "Senior year",
+        "cats": ["academics", "cyber"],
+        "summary": "Technical college coursework on top of a full high school load.",
+        "details": [
+            'My high school paid for me to attend my local technical college &mdash; which happens to '
+            'have one of the best cyber programs in the state &mdash; and take classes <b>in addition</b> '
+            'to my high school coursework. I picked up skills there I would not have reached until my '
+            'junior or senior year of college, if at all: Cisco Networking, Linux, Bash, Enterprise '
+            'Clients, and Security 1.',
+        ],
+    },
+    {
+        "id": "fbla",
+        "band": "High school",
+        "title": "First at state, FBLA coding and programming",
+        "period": "Senior year",
+        "cats": ["competition"],
+        "summary": "Won the state Future Business Leaders of America competition and went to nationals.",
+        "details": [
+            'Won <b>first at state</b> in the Future Business Leaders of America coding and programming '
+            'competition and went on to nationals in Atlanta.',
+        ],
+    },
+]
+
+
+CAT_LABEL = {c["id"]: c["label"] for c in CATEGORIES}
+
+
+_TAG = re.compile(r"<[^>]+>")
+
+
+def search_blob(entry):
+    """Plain-text haystack the client-side search matches against."""
+    parts = [entry["title"], entry["period"], entry.get("summary", ""), entry["band"]]
+    parts += entry.get("details", [])
+    parts += entry.get("children", [])
+    parts += [CAT_LABEL[c] for c in entry["cats"]]
+    text = html.unescape(_TAG.sub(" ", " ".join(parts)))
+    return " ".join(text.split())
+
+
+def page_data():
+    """Everything the /pseudo_resume template needs, pre-grouped."""
+    by_band = [
+        (band, [e for e in ENTRIES if e["band"] == band])
+        for band in BANDS
+    ]
+    by_cat = [
+        (c, [e for e in ENTRIES if c["id"] in e["cats"]])
+        for c in CATEGORIES
+    ]
+    return {
+        "categories": CATEGORIES,
+        "cat_label": CAT_LABEL,
+        "bands": BANDS,
+        "stats": STATS,
+        "entries": ENTRIES,
+        "by_band": by_band,
+        "by_cat": by_cat,
+        "total": len(ENTRIES),
+    }

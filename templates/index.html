@@ -16,7 +16,7 @@
     <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
 </head>
 <body>
-    <script src="https://keepandroidopen.org/banner.js"></script>
+    <!--<script src="https://keepandroidopen.org/banner.js"></script>-->
     <main>
     <!--    
     <header class="header">
@@ -28,29 +28,37 @@
                 <h1>Jack Hagen</h1>
                 <h3>Total articles: <span class="stat_number">{{ total_articles }}</span></h3>
                 <h3>Total words in articles: <span class="stat_number">{{ total_words }}</span></h3>
-                <h3>Total jobs running by me on BOSE: <span class="stat_number">{{ bose_jobs }}</span></h3>
+                <h3>Total jobs running by me on <a href="https://hpc.uwec.edu/">BOSE</a>: <span class="stat_number">{{ bose_jobs }}</span></h3>
                 <h3>CPU/GPUS/RAM used by me on <a href="https://hpc.uwec.edu/">BOSE</a>:  <span class="stat_number">{{ bose_cpus }}/{{ bose_gpus }}/{{ bose_ram }}GB</span></h3>
                 <h3>Total GHz days donated to <a href="https://www.mersenne.org/">GIMPS</a>: <span class="stat_number">{{ ghz_days }}</span></h3>
                 <h3>Total URLS indexed by <a href="https://stultus.rip">Stultus</a>: <span class="stat_number">{{ stultus_urls }}</span></h3>
             </div>
 
             <div class="hero-image">
-                <img src="/static/images/homepage/{{ loaded_image_filepath }}" alt="{{ loaded_image_caption }}">
+                <a href="/static/images/homepage/{{ loaded_image_filepath }}">
+                    <img src="/static/images/homepage_web/{{ loaded_image_filepath.rsplit('.', 1)[0] }}.webp" alt="{{ loaded_image_caption }}" decoding="async">
+                </a>
                 <p class="caption">{{ loaded_image_caption }}. <a href="/pictures">My pictures.</a></p>
             </div>
         </div>
-    
-        <section id="about">
+
+        <noscript>
+            <div class="noscript-box">
+                <p>No javascript: I see you're blocking javascript. That means either you're a bot, or you're a very cool and intelligent person. I agree, blocking javascript is a very reasonable choice in the modern age of corporate web development. For that reason, this site is almost 100% accessible without javascript. Everything will look the same except for the interactives in /pesudo-resume (or maybe I haven't released that yet). Good luck, and happy browsing.</p>
+            </div>
+        </noscript>
+
+        <section id="about">I'm Jack Hagen. I'm a undergraduate student, double majoring in computer science and political science at the University of Wisconsin - Eau Claire. My passion is cyber threat intelligence, specializing in international relations and cybersecurity research focusing on analyzing threats from Chinese threat actors. About me.
             <h2>About Me</h2>
-            <p>I'm Jack Hagen. I'm a student, double majoring in Computer Science and Political Science at the <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>. I want to work in cyber threat intelligence when I graduate. I do international relations and cybersecurity research with faculty at my university as well as in my own time. <a href="/articles/Introduction">About me.</a></p>
+            <p>I'm Jack Hagen. I'm a undergraduate student, double majoring in computer science and political science at the <a href="https://uwec.edu">University of Wisconsin - Eau Claire</a>. My passion is cyber threat intelligence, specializing in international relations and cybersecurity research focusing on analyzing threats from Chinese threat actors. <a href="/articles/Introduction">About me.</a></p>
             <p>Any opinions found here do not necessarily reflect those of my employer.</p>
-            <p>If you want a starting point to understand my work you should start with one of these articles</p>
+            <p>If you want a starting point to understand me you should start with one of these articles</p>
             <ul>
                 <li><a href="/articles/Introduction">An introduction to myself</a></li>
                 <li><a href="/articles/Introduction To Influence Warfare">My introduction to Influence Warfare</a></li>
                 <li><a href="/articles/AIMS">My record of what I worked on as part of UWEC's Artificial Intelligence Machine learning Security research group</a></li>
                 <li><a href="/resume">My professional resume</a></li>
-                <li><a href="/articles/Pseudo Resume">My uncategorized, nuanced, stream of consciousness resume</a></li>
+                <!--<li><a href="/articles/Pseudo Resume">My uncategorized, nuanced, stream of consciousness resume</a></li>-->
             </ul>  
               
         </section>
@@ -67,7 +75,7 @@
             <h2>Recent Articles</h2>
             <ul>
             {% for article in articles %}
-                <li><a href="/articles/{{ article }}">{{ article }}</a> - {{ edit_dates[loop.index0] }}</li>
+                <li><a href="/articles/{{ article }}">{{ article }}</a>{% if edit_dates[loop.index0] %} - {{ edit_dates[loop.index0] }}{% endif %}</li>
             {% endfor %}
             </ul>
         </section>
@@ -87,6 +95,7 @@
         <section>
             <h2>Other</h2>
             <ul>
+                <li><a href="/projects">Projects</a></li>
                 <li><a href="/articles/Boilerplate">Boilerplate</a></li>
             </ul>
         </section>
