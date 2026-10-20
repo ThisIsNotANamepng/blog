@@ -1,5 +1,7 @@
-build the container with `docker build -t ilikecontainers/personal-website:1.0.x . --no-cache`
+build the container with `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t ilikecontainers/personal-website:1.0.x . --no-cache`
 
 push the container to dockerhub with `docker push ilikecontainers/personal-website:1.0.x`
 
-reminder that articles need to be pushed to blog_articles
+Make sure to tag it as the latest version `docker tag ilikecontainers/personal-website:1.0.x ilikecontainers/personal-website:latest`
+
+And push the latest tag too `docker push ilikecontainers/personal-website:latest`

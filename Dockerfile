@@ -1,27 +1,31 @@
-FROM dhi.io/alpine-base:3.23-alpine3.23-dev
+FROM docker.io/alpine:latest
 
 # Install dependencies
 RUN apk update
-RUN apk add git
 RUN apk add python3
-RUN apk add py-pip
-RUN python3 -m ensurepip
 
 # Create user and switch
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-WORKDIR /app
-RUN chown appuser:appgroup /app
+WORKDIR /app/blog
+RUN chown appuser:appgroup /app/blog
 USER appuser
 
-RUN git clone --depth=1 https://github.com/ThisIsNotANamepng/blog.git
+# Alpine's system Python is externally managed (PEP 668), so pip can't
+# install into it. A venv sidesteps that and needs no py-pip/ensurepip.
+RUN python3 -m venv /app/blog/.venv
 
-# Articles live in a separate repo and are pulled at container startup
-ENV ARTICLES_REPO_URL=https://github.com/ThisIsNotANamepng/blog_articles.git
+# Requirements first so code/article edits don't redo the pip install
+COPY --chown=appuser:appgroup requirments.txt .
+RUN /app/blog/.venv/bin/pip install -r requirments.txt
 
-RUN pip3 install -r blog/requirments.txt
-WORKDIR /app/blog
+# Build from the local checkout (articles included). See .dockerignore.
+COPY --chown=appuser:appgroup . .
 
-# Drop any articles bundled with the code clone — main.py refreshes them on boot.
-RUN rm -rf articles
+# There's no .git in the image, so main.py reads the commit hash from here.
+# Pass it with: --build-arg GIT_COMMIT=$(git rev-parse --short HEAD)
+ARG GIT_COMMIT
+ENV GIT_COMMIT=$GIT_COMMIT
 
-CMD ["python3", "main.py"]
+EXPOSE 5000
+
+CMD ["/app/blog/.venv/bin/python", "-m", "gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "--access-logfile", "-", "main:app"]

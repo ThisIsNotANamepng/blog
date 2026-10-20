@@ -2,4 +2,4 @@ env
 venv
 *.pyc
 __pycache__
-articles/*
+articles/*.mdd

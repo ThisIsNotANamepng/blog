@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://cloud.umami.is; img-src 'self'; connect-src 'self' https://api-gateway.umami.dev; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <title>Pseudo Resume</title>
+    <link rel="stylesheet" href="/static/css/colors.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pseudo_resume.css">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="fd4248a8-d075-4593-8ebc-964ffbb6f4d6"></script>
+    <script defer src="/static/js/pseudo_resume.js"></script>
+</head>
+<body>
+<main id="page">
+
+    <header class="header">
+        <a href="/"><h1>Homepage</h1></a>
+    </header>
+
+    <h1 class="page-title">Pseudo Resume</h1>
+
+    <p class="lede">
+        I don't like resumes. They're annoying and formal and don't have enough room for the things and
+        nuances I think employers should know. This is everything that belongs on mine, laid out on a
+        timeline instead. Filter by what you care about, drag across the years to zoom in, and pick
+        anything to read the story behind it and see what else was going on at the same time.
+    </p>
+    <p class="lede-links">
+        <a href="/articles/Pseudo Resume">The stream-of-consciousness version</a>
+        &middot;
+        <a href="/research">Research</a>
+        &middot;
+        <a href="/resume">The formal PDF resume</a>
+    </p>
+
+    <section class="stats" aria-label="Highlights">
+        {% for s in stats %}
+            <button type="button" class="stat"
+                    {% if s.entry %}data-entry="{{ s.entry }}"{% else %}data-cat="{{ s.cat }}"{% endif %}>
+                <span class="stat-value">{{ s.value }}</span>
+                <span class="stat-label">{{ s.label }}</span>
+            </button>
+        {% endfor %}
+    </section>
+
+    <section class="toolbar" id="toolbar" aria-label="Search and filters">
+        <div class="tool-row">
+            <label class="search-wrap">
+                <span class="visually-hidden">Search everything</span>
+                <input type="search" id="q" placeholder="Search everything  ( / )" autocomplete="off">
+            </label>
+            <label class="select">
+                <span>Sort</span>
+                <select id="sort">
+                    <option value="recent">Most recent</option>
+                    <option value="newest">Started, newest</option>
+                    <option value="oldest">Started, oldest</option>
+                    <option value="longest">Longest running</option>
+                    <option value="alpha">A &ndash; Z</option>
+                </select>
+            </label>
+            <label class="select">
+                <span>Group</span>
+                <select id="group">
+                    <option value="none">None</option>
+                    <option value="category">Category</option>
+                    <option value="year">Year started</option>
+                    <option value="status">Status</option>
+                </select>
+            </label>
+        </div>
+        <div class="tool-row">
+            <div class="chips" id="chips" role="group" aria-label="Categories">
+                {% for c in categories %}
+                    <button type="button" class="chip" data-cat="{{ c.id }}" aria-pressed="false">
+                        <span class="swatch swatch-{{ c.id }}" aria-hidden="true"></span>{{ c.label }}<span class="chip-count"></span>
+                    </button>
+                {% endfor %}
+            </div>
+            <div class="segmented" id="status" role="group" aria-label="Status">
+                <button type="button" data-status="any" aria-pressed="true">Any</button>
+                <button type="button" data-status="ongoing" aria-pressed="false">Ongoing</button>
+                <button type="button" data-status="done" aria-pressed="false">Finished</button>
+            </div>
+        </div>
+        <div class="tool-row tool-summary">
+            <span id="count" aria-live="polite"></span>
+            <button type="button" class="linkish" id="reset" hidden>Clear all filters</button>
+        </div>
+    </section>
+
+    <div class="explorer" id="explorer" hidden>
+        <section class="xp-list" aria-label="Experiences">
+            <div class="axis" id="axis">
+                <div class="axis-left">
+                    <div class="eras" id="eras" role="group" aria-label="Zoom to">
+                        <button type="button" data-era="all" aria-pressed="true">All time</button>
+                    </div>
+                    <span class="axis-hint" id="axis-hint">Drag across the years to zoom</span>
+                </div>
+                <div class="axis-track" id="axis-track" title="Drag to zoom into a stretch of time; click a year to see just that year"></div>
+            </div>
+            <div class="rows" id="rows"></div>
+            <p class="empty" id="empty" hidden>Nothing matches that. <button type="button" class="linkish" id="empty-reset">Clear the filters</button></p>
+        </section>
+
+        <aside class="detail" id="detail" aria-label="Details" aria-live="polite"></aside>
+    </div>
+
+    <noscript>
+        <section class="fallback">
+            {% for e in fallback %}
+                <article>
+                    <h2>{{ e.title }}</h2>
+                    <p class="fallback-meta">{{ e.period }} &middot; {% for c in e.cats %}{{ cat_label[c] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+                    {% for d in e.details %}<p>{{ d|safe }}</p>{% endfor %}
+                    {% if e.children %}<ul>{% for c in e.children %}<li>{{ c|safe }}</li>{% endfor %}</ul>{% endif %}
+                </article>
+            {% endfor %}
+        </section>
+    </noscript>
+
+    <footer>
+        Everything here is also written out in prose in
+        <a href="/articles/Pseudo Resume">the Pseudo Resume article</a>.
+        <span class="keys">Press <kbd>/</kbd> to search, <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to step through, <kbd>Esc</kbd> to back out.</span>
+    </footer>
+
+</main>
+<script type="application/json" id="resume-data">{{ client|tojson }}</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+.git
+articles/.git
+venv
+env
+__pycache__
+*.pyc
+Dockerfile
+.dockerignore
+.venv
+.github
+deploy
