@@ -3,23 +3,25 @@
 # differs from what's running, replaces the container. Nothing on GitHub needs
 # access to the VPS.
 #
-# Install:
+# Install (rootful podman, so it all runs from root's crontab):
 #   sudo mkdir -p /opt/personal-website
 #   sudo cp update.sh /opt/personal-website/ && sudo chmod +x /opt/personal-website/update.sh
-#   crontab -e    (as a user that can run docker, or root)
-#   */10 * * * * flock -n /tmp/personal-website-update.lock /opt/personal-website/update.sh >> "$HOME/personal-website-update.log" 2>&1
+#   sudo systemctl enable --now podman-restart.service   # start the site after a reboot
+#   sudo crontab -e
+#   */10 * * * * flock -n /tmp/personal-website-update.lock /opt/personal-website/update.sh >> /root/personal-website-update.log 2>&1
 set -eu
 
-IMAGE="ilikecontainers/personal-website:latest"
+# Fully qualified: podman won't guess a registry for a short name without a TTY
+IMAGE="docker.io/ilikecontainers/personal-website:latest"
 NAME="personal-website"
 
 # The app listens on 5000 inside the container and reads /stats.txt at startup.
-# Bound to localhost only: Caddy is the public entry point, and ports Docker
-# publishes on 0.0.0.0 skip ufw entirely.
+# Bound to localhost only: Caddy is the public entry point, and published
+# container ports go around ufw.
 run_container() {
-    docker run -d \
+    podman run -d \
         --name "$NAME" \
-        --restart unless-stopped \
+        --restart always \
         -p 127.0.0.1:5000:5000 \
         -v /stats.txt:/stats.txt:ro \
         "$IMAGE"
@@ -29,22 +31,22 @@ log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') $*"
 }
 
-if ! docker pull -q "$IMAGE" >/dev/null; then
+if ! podman pull -q "$IMAGE" >/dev/null; then
     log "pull failed, leaving the current container running"
     exit 1
 fi
 
-latest=$(docker image inspect -f '{{.Id}}' "$IMAGE")
+latest=$(podman image inspect -f '{{.Id}}' "$IMAGE")
 # Empty if the container is missing or stopped, so those get fixed too
-running=$(docker inspect -f '{{if .State.Running}}{{.Image}}{{end}}' "$NAME" 2>/dev/null || true)
+running=$(podman inspect -f '{{if .State.Running}}{{.Image}}{{end}}' "$NAME" 2>/dev/null || true)
 
 if [ "$latest" = "$running" ]; then
     exit 0
 fi
 
 log "deploying $latest"
-docker rm -f "$NAME" >/dev/null 2>&1 || true
+podman rm -f "$NAME" >/dev/null 2>&1 || true
 run_container >/dev/null
 # Drop the now-untagged previous image so the disk doesn't fill up
-docker image prune -f >/dev/null
+podman image prune -f >/dev/null
 log "deployed"
