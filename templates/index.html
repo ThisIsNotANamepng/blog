@@ -75,7 +75,7 @@
             <h2>Recent Articles</h2>
             <ul>
             {% for article in articles %}
-                <li><a href="/articles/{{ article }}">{{ article }}</a>{% if edit_dates[loop.index0] %} - {{ edit_dates[loop.index0] }}{% endif %}</li>
+                <li><a href="/articles/{{ article|urlencode }}">{{ article }}</a>{% if edit_dates[loop.index0] %} - {{ edit_dates[loop.index0] }}{% endif %}</li>
             {% endfor %}
             </ul>
         </section>
