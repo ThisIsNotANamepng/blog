@@ -3,6 +3,13 @@ main {
     /*float: left;*/
 }
 
+/* Images keep their natural size but never grow past the column, so wide
+   charts shrink to fit on phones instead of overflowing the screen. */
+main img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Fenced code blocks: <pre><code>...</code></pre> from markdown's fenced_code. */
 pre {
     background: var(--code-background);
@@ -29,6 +36,9 @@ code {
     padding: 0.1em 0.3em;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 0.9em;
+    /* Long unbroken inline code (regexes, URLs) wraps instead of running off
+       the screen. Code blocks are unaffected: white-space: pre stops wrapping. */
+    overflow-wrap: anywhere;
 }
 
 table {
